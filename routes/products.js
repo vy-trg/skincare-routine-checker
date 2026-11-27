@@ -20,7 +20,7 @@ function createProductsRouter(store, actives = defaultActives) {
       ingredients: row.ingredients_raw,
       actives: findActives(row.ingredients_raw, actives).map((active) => active.name),
     }));
-    res.status(status).render('products', { title: 'My products', products, errors, values });
+    res.status(status).render('products', { title: 'My Products', products, errors, values });
   }
 
   router.get('/', (req, res) => render(req, res, 200, {}, {}));

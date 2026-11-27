@@ -3,19 +3,34 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const pool = require('../db/pool');
 const { BCRYPT_COST } = require('../auth/passport');
+const actives = require('../data/actives.json');
+const { categoryLabel } = require('../public/analyse-helpers');
 const { SKIN_TYPES } = require('../lib/skin-types');
 const { normalizeEmail, validateRegistration } = require('../lib/validation');
 
 const router = express.Router();
 
+// The Known Actives panel: what the page needs and nothing else (no summaries or source URLs).
+const knownActives = actives.map(({ id, name, category, inciAliases }) => ({
+  id,
+  name,
+  category,
+  inciAliases,
+}));
+
+// Public: anyone can paste an ingredient list here. The analysis itself runs in the browser
+// against POST /api/analyze, which needs no login and no database.
 router.get('/', (req, res) => {
-  if (!req.isAuthenticated()) return res.redirect('/login');
-  res.render('home', { title: 'Home' });
+  res.render('home', {
+    title: 'Check Your Ingredients',
+    actives: knownActives,
+    categoryLabel,
+  });
 });
 
 router.get('/login', (req, res) => {
   if (req.isAuthenticated()) return res.redirect('/');
-  res.render('login', { title: 'Log in', errors: {}, values: {} });
+  res.render('login', { title: 'Log In', errors: {}, values: {} });
 });
 
 router.post('/login', (req, res, next) => {
@@ -28,7 +43,7 @@ router.post('/login', (req, res, next) => {
     if (!user) {
       // Same message for an unknown email and a wrong password.
       return res.status(401).render('login', {
-        title: 'Log in',
+        title: 'Log In',
         errors: { form: 'Incorrect email or password.' },
         values: { email },
       });
@@ -44,7 +59,7 @@ router.post('/login', (req, res, next) => {
 router.get('/register', (req, res) => {
   if (req.isAuthenticated()) return res.redirect('/');
   res.render('register', {
-    title: 'Create account',
+    title: 'Create Account',
     errors: {},
     values: {},
     skinTypes: SKIN_TYPES,
@@ -57,7 +72,7 @@ router.post('/register', async (req, res, next) => {
   // What to show again if registration fails. The password is never sent back.
   const renderForm = (status, formErrors) =>
     res.status(status).render('register', {
-      title: 'Create account',
+      title: 'Create Account',
       errors: formErrors,
       values: {
         email: clean.email,

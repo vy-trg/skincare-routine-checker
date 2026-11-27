@@ -1,31 +1,98 @@
-<%- include('partials/head', { title }) %>
+<%- include('partials/head', { title, wide: true, home: true }) %>
 
-<h1>Hello, <%= currentUser.display_name || currentUser.email %></h1>
+<div class="home">
+  <div class="home__main">
+    <h1>Check What Is In Your Skincare</h1>
+    <p class="lede">Paste the ingredient list from a product label. We pick out the known actives, explain each in a sentence and link to where that comes from.</p>
 
-<dl class="facts">
-  <dt>Signed in as</dt>
-  <dd><%= currentUser.email %></dd>
+    <form id="analyse-form" class="analyse" novalidate>
+      <div class="field">
+        <label for="ingredients">Ingredient List</label>
+        <textarea id="ingredients" name="text" rows="8" spellcheck="false"
+                  aria-describedby="ingredients-hint analyse-error"
+                  placeholder="Aqua, Glycerin, Niacinamide, Retinol, Tocopherol"></textarea>
+        <p id="ingredients-hint" class="field__hint">Paste the list as printed on the label. Commas, semicolons and line breaks all work.</p>
+      </div>
 
-  <dt>Skin type</dt>
-  <dd>
-    <% if (!currentUser.skin_type) { %>
-      Not set
-    <% } else if (currentUser.skin_type === 'other' && currentUser.skin_type_other) { %>
-      <%= currentUser.skin_type_other %>
-    <% } else { %>
-      <%= currentUser.skin_type %>
+      <p id="analyse-error" class="notice" role="alert" hidden></p>
+
+      <button type="submit" id="analyse-button" class="button button--primary">Analyse Ingredients</button>
+      <noscript><p class="field__hint">Analysing needs JavaScript. The list of known actives on this page works without it.</p></noscript>
+    </form>
+
+    <section id="results" class="results" aria-labelledby="results-heading" hidden>
+      <h2 id="results-heading">Results</h2>
+      <p id="results-summary" class="results__summary" tabindex="-1"></p>
+      <p id="results-truncated" class="notice notice--info" hidden></p>
+      <p id="results-empty" hidden></p>
+
+      <ul id="results-skeleton" class="skeleton" aria-hidden="true" hidden>
+        <li class="skeleton__row"><span class="skeleton__bar skeleton__bar--title"></span><span class="skeleton__bar skeleton__bar--tag"></span></li>
+        <li class="skeleton__row"><span class="skeleton__bar skeleton__bar--title"></span><span class="skeleton__bar skeleton__bar--tag"></span></li>
+        <li class="skeleton__row"><span class="skeleton__bar skeleton__bar--title"></span><span class="skeleton__bar skeleton__bar--tag"></span></li>
+      </ul>
+
+      <ul id="results-list" class="active-list"></ul>
+
+      <% if (currentUser) { %>
+        <p id="results-next" class="results__next" hidden>
+          To check these against the rest of your products, open your
+          <a href="/routines/am">Morning Routine</a> or your <a href="/routines/pm">Evening Routine</a>.
+        </p>
+      <% } %>
+    </section>
+
+    <div class="status-live" id="status-live" role="status" aria-live="polite"></div>
+
+    <%- include('partials/disclaimer') %>
+
+    <% if (currentUser) { %>
+      <section class="account" aria-labelledby="account-heading">
+        <h2 id="account-heading">Your Account</h2>
+        <dl class="facts">
+          <dt>Signed in as</dt>
+          <dd><%= currentUser.display_name || currentUser.email %></dd>
+
+          <dt>Skin type</dt>
+          <dd>
+            <% if (!currentUser.skin_type) { %>
+              Not set
+            <% } else if (currentUser.skin_type === 'other' && currentUser.skin_type_other) { %>
+              <%= currentUser.skin_type_other %>
+            <% } else { %>
+              <%= currentUser.skin_type %>
+            <% } %>
+          </dd>
+        </dl>
+      </section>
     <% } %>
-  </dd>
-</dl>
+  </div>
 
-<p class="links">
-  <a href="/products">My products</a>
-  <a href="/routines/am">Morning routine</a>
-  <a href="/routines/pm">Evening routine</a>
-</p>
+  <aside class="home__side">
+    <section class="known" aria-labelledby="known-heading">
+      <h2 id="known-heading">Known Actives</h2>
+      <p class="field__hint">These are the <%= actives.length %> actives we can recognise today.</p>
 
-<form method="post" action="/logout">
-  <button type="submit" class="button button--quiet">Log out</button>
-</form>
+      <div class="field">
+        <label for="known-search">Search Known Actives</label>
+        <input id="known-search" type="search" autocomplete="off" spellcheck="false" placeholder="Try &quot;retinol&quot; or &quot;acid&quot;">
+      </div>
+      <p id="known-status" class="field__hint" aria-live="polite"><%= actives.length %> known actives</p>
+
+      <ul id="known-list" class="known__list" tabindex="0" aria-label="Known actives, scrollable list">
+        <% actives.forEach((active) => { %>
+          <li class="known__item" data-id="<%= active.id %>">
+            <span class="known__name"><%= active.name %></span>
+            <span class="tag"><%= categoryLabel(active.category) %></span>
+          </li>
+        <% }) %>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+<script type="application/json" id="actives-data"><%- JSON.stringify(actives).replace(/</g, '\\u003c') %></script>
+<script src="/analyse-helpers.js"></script>
+<script src="/home.js"></script>
 
 <%- include('partials/foot') %>
