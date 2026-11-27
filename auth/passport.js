@@ -11,6 +11,9 @@ const DUMMY_HASH = bcrypt.hashSync('timing-safe-dummy-password', BCRYPT_COST);
 function configurePassport(passport, pool) {
   passport.use(
     new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+      // bcrypt.compare throws on non-strings; treat them as a normal failed login.
+      if (typeof password !== 'string') return done(null, false);
+
       try {
         const { rows } = await pool.query(
           'SELECT id, password_hash FROM users WHERE email = $1',
