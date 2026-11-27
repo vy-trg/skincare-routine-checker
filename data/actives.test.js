@@ -8,7 +8,6 @@ const FILE = path.join(__dirname, 'actives.json');
 
 const ALLOWED_CATEGORIES = [
   'retinoid',
-  'retinoid-alternative',
   'aha',
   'pha',
   'bha',
