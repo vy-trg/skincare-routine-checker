@@ -14,6 +14,7 @@
 const rateLimit = require('express-rate-limit');
 const { SKIN_TYPES } = require('../lib/skin-types');
 const { normalizeEmail, validateRegistration } = require('../lib/validation');
+const { proxyChainWarning } = require('../lib/proxy-warning');
 
 const RATE_LIMIT = { windowMs: 15 * 60 * 1000, limit: 10 };
 
@@ -65,6 +66,9 @@ function createLimitHandler({ view, route, buildLocals, log = console.warn, now 
     // used, so it can be compared with the real one when checking the proxy setting.
     if (typeof info.used === 'number' && info.used === info.limit + 1) {
       log(`Rate limit reached for ${route} from ${req.ip}`);
+      // A private or Cloudflare address means the limiter is counting a proxy, not a visitor.
+      const warning = proxyChainWarning(req.ip);
+      if (warning) log(warning);
     }
     const minutes = waitMinutes(info.resetTime, now(), RATE_LIMIT.windowMs);
     res.status(429).render(view, buildLocals(req, limitMessage(minutes)));

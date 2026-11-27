@@ -75,6 +75,23 @@ test('limit handler: logs once when the block starts, not for every blocked requ
   assert.equal(logged.length, 1);
 });
 
+test('limit handler: also logs a WARNING once when req.ip is a private or Cloudflare address', () => {
+  for (const ip of ['10.24.225.5', '::ffff:172.20.0.9', '104.16.0.1']) {
+    const logged = [];
+    const handler = createLimitHandler({ view: 'login', route: 'POST /login', buildLocals: () => ({}), log: (l) => logged.push(l) });
+    for (const used of [11, 12, 13]) handler({ ip, rateLimit: { used, limit: 10 } }, fakeRes());
+    assert.equal(logged.length, 2, ip);
+    assert.match(logged[1], /^WARNING: .*TRUST_PROXY_HOPS is probably too low/, ip);
+  }
+});
+
+test('limit handler: no warning for an ordinary visitor address', () => {
+  const logged = [];
+  const handler = createLimitHandler({ view: 'login', route: 'POST /login', buildLocals: () => ({}), log: (l) => logged.push(l) });
+  handler({ ip: '198.51.100.7', rateLimit: { used: 11, limit: 10 } }, fakeRes());
+  assert.equal(logged.length, 1);
+});
+
 test('limit handler: copes with a missing rateLimit object and a missing body', () => {
   const handler = createLimitHandler({ view: 'login', route: 'POST /login', buildLocals: () => ({}), log: () => {} });
   const res = fakeRes();
