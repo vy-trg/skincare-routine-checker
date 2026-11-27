@@ -1,6 +1,8 @@
 const express = require('express');
 const passport = require('passport');
+const bcrypt = require('bcryptjs');
 const pool = require('../db/pool');
+const { BCRYPT_COST } = require('../auth/passport');
 const { SKIN_TYPES } = require('../lib/skin-types');
 const { normalizeEmail, validateRegistration } = require('../lib/validation');
 
@@ -69,16 +71,7 @@ router.post('/register', async (req, res, next) => {
   if (Object.keys(errors).length > 0) return renderForm(400, errors);
 
   try {
-    // TODO(5): hash the password with bcryptjs and assign it to passwordHash.
-    //   - Use the raw req.body.password (validated above, never trimmed).
-    //   - Use the same cost factor as the DUMMY_HASH in auth/passport.js.
-    //   - Prefer the async bcrypt.hash: hashSync blocks the whole server while it runs.
-    //   - Never log or store the plain password.
-    let passwordHash;
-
-    if (!passwordHash) {
-      throw new Error('TODO(5): password hashing is not implemented yet in routes/auth.js');
-    }
+    const passwordHash = await bcrypt.hash(req.body.password, BCRYPT_COST);
 
     const { rows } = await pool.query(
       `INSERT INTO users (email, password_hash, display_name, skin_type, skin_type_other)
