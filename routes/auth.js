@@ -4,12 +4,16 @@ const bcrypt = require('bcryptjs');
 const pool = require('../db/pool');
 const { BCRYPT_COST } = require('../auth/passport');
 const { loginResponse } = require('../auth/login-response');
+const { createAuthLimiters } = require('../auth/rate-limit');
 const actives = require('../data/actives.json');
 const { categoryLabel } = require('../public/analyse-helpers');
 const { SKIN_TYPES } = require('../lib/skin-types');
 const { normalizeEmail, validateRegistration } = require('../lib/validation');
 
 const router = express.Router();
+
+// Created once, at start-up. Only the two POST routes below use them, not the GET pages.
+const { loginLimiter, registerLimiter } = createAuthLimiters();
 
 // The Known Actives panel: what the page needs and nothing else (no summaries or source URLs).
 const knownActives = actives.map(({ id, name, category, inciAliases }) => ({
@@ -34,7 +38,7 @@ router.get('/login', (req, res) => {
   res.render('login', { title: 'Log In', errors: {}, values: {} });
 });
 
-router.post('/login', (req, res, next) => {
+router.post('/login', loginLimiter, (req, res, next) => {
   // Normalise here so the LocalStrategy always sees a trimmed, lowercase email.
   const email = normalizeEmail(req.body.email);
   req.body.email = email;
@@ -53,7 +57,7 @@ router.get('/register', (req, res) => {
   });
 });
 
-router.post('/register', async (req, res, next) => {
+router.post('/register', registerLimiter, async (req, res, next) => {
   const { errors, clean } = validateRegistration(req.body);
 
   // What to show again if registration fails. The password is never sent back.
