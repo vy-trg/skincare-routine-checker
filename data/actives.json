@@ -1,0 +1,242 @@
+[
+  {
+    "id": "retinol",
+    "name": "Retinol",
+    "inciAliases": ["Retinol"],
+    "category": "retinoid",
+    "summary": "A form of vitamin A commonly used in night creams and serums aimed at the look of fine lines and uneven texture.",
+    "sourceUrl": "https://dermnetnz.org/topics/topical-retinoids"
+  },
+  {
+    "id": "retinal",
+    "name": "Retinal (retinaldehyde)",
+    "inciAliases": ["Retinal", "Retinaldehyde"],
+    "category": "retinoid",
+    "summary": "A form of vitamin A that is one step closer to retinoic acid than retinol, used in leave-on products for the look of fine lines.",
+    "sourceUrl": "https://dermnetnz.org/topics/topical-retinoids"
+  },
+  {
+    "id": "retinyl-palmitate",
+    "name": "Retinyl palmitate",
+    "inciAliases": ["Retinyl Palmitate"],
+    "category": "retinoid",
+    "summary": "A gentler, ester form of vitamin A often added in small amounts to moisturisers.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "hydroxypinacolone-retinoate",
+    "name": "Hydroxypinacolone retinoate (HPR)",
+    "inciAliases": ["Hydroxypinacolone Retinoate"],
+    "category": "retinoid",
+    "summary": "A newer vitamin A ester used in serums as an alternative to retinol.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "adapalene",
+    "name": "Adapalene",
+    "inciAliases": ["Adapalene"],
+    "category": "retinoid",
+    "summary": "A synthetic retinoid sold as a gel or cream, available without a prescription in some countries and by prescription in others.",
+    "sourceUrl": "https://dermnetnz.org/topics/topical-retinoids"
+  },
+  {
+    "id": "bakuchiol",
+    "name": "Bakuchiol",
+    "inciAliases": ["Bakuchiol"],
+    "category": "retinoid-alternative",
+    "summary": "A plant-derived ingredient marketed as a gentler alternative to retinol; it is not a vitamin A derivative.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "glycolic-acid",
+    "name": "Glycolic acid",
+    "inciAliases": ["Glycolic Acid"],
+    "category": "aha",
+    "summary": "A small alpha hydroxy acid used in exfoliating toners, serums and peels to loosen dead surface cells.",
+    "sourceUrl": "https://dermnetnz.org/topics/alpha-hydroxy-acid-facial-treatments"
+  },
+  {
+    "id": "lactic-acid",
+    "name": "Lactic acid",
+    "inciAliases": ["Lactic Acid"],
+    "category": "aha",
+    "summary": "An alpha hydroxy acid that exfoliates the skin surface and is often found in milder exfoliating products.",
+    "sourceUrl": "https://dermnetnz.org/topics/alpha-hydroxy-acid-facial-treatments"
+  },
+  {
+    "id": "mandelic-acid",
+    "name": "Mandelic acid",
+    "inciAliases": ["Mandelic Acid"],
+    "category": "aha",
+    "summary": "An alpha hydroxy acid with larger molecules than glycolic acid, used in exfoliating serums and peels.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "gluconolactone",
+    "name": "Gluconolactone",
+    "inciAliases": ["Gluconolactone"],
+    "category": "pha",
+    "summary": "A polyhydroxy acid used for gentle exfoliation in products made for skin that dislikes stronger acids.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "lactobionic-acid",
+    "name": "Lactobionic acid",
+    "inciAliases": ["Lactobionic Acid"],
+    "category": "pha",
+    "summary": "A polyhydroxy acid used for mild exfoliation and as a moisture-binding ingredient.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "salicylic-acid",
+    "name": "Salicylic acid",
+    "inciAliases": ["Salicylic Acid"],
+    "category": "bha",
+    "summary": "An oil-soluble beta hydroxy acid used in cleansers and treatments for oily or clogged-looking skin.",
+    "sourceUrl": "https://dermnetnz.org/topics/salicylic-acid"
+  },
+  {
+    "id": "betaine-salicylate",
+    "name": "Betaine salicylate",
+    "inciAliases": ["Betaine Salicylate"],
+    "category": "bha",
+    "summary": "A salicylic acid derivative used as a milder-feeling alternative in leave-on products.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "l-ascorbic-acid",
+    "name": "L-ascorbic acid (vitamin C)",
+    "inciAliases": ["Ascorbic Acid", "L-Ascorbic Acid"],
+    "category": "vitamin-c",
+    "summary": "The pure form of vitamin C, used in serums as an antioxidant; it breaks down easily when exposed to air and light.",
+    "sourceUrl": "https://dermnetnz.org/topics/topical-vitamin-c"
+  },
+  {
+    "id": "sodium-ascorbyl-phosphate",
+    "name": "Sodium ascorbyl phosphate",
+    "inciAliases": ["Sodium Ascorbyl Phosphate"],
+    "category": "vitamin-c",
+    "summary": "A water-soluble, more stable derivative of vitamin C used in lightweight serums and creams.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "magnesium-ascorbyl-phosphate",
+    "name": "Magnesium ascorbyl phosphate",
+    "inciAliases": ["Magnesium Ascorbyl Phosphate"],
+    "category": "vitamin-c",
+    "summary": "A water-soluble, stable derivative of vitamin C found in gentler vitamin C products.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "ascorbyl-glucoside",
+    "name": "Ascorbyl glucoside",
+    "inciAliases": ["Ascorbyl Glucoside"],
+    "category": "vitamin-c",
+    "summary": "Vitamin C bound to a sugar molecule to make it more stable in water-based formulas.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "ascorbyl-tetraisopalmitate",
+    "name": "Ascorbyl tetraisopalmitate",
+    "inciAliases": ["Ascorbyl Tetraisopalmitate"],
+    "category": "vitamin-c",
+    "summary": "An oil-soluble vitamin C derivative used in creams and oil-based serums.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "ethyl-ascorbic-acid",
+    "name": "3-O-ethyl ascorbic acid",
+    "inciAliases": ["3-O-Ethyl Ascorbic Acid", "Ethyl Ascorbic Acid"],
+    "category": "vitamin-c",
+    "summary": "A stable vitamin C derivative that dissolves in both water and oil, used in serums.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "niacinamide",
+    "name": "Niacinamide",
+    "inciAliases": ["Niacinamide", "Nicotinamide"],
+    "category": "brightening",
+    "summary": "A form of vitamin B3 used in serums and moisturisers for the look of uneven tone and visible pores.",
+    "sourceUrl": "https://dermnetnz.org/topics/nicotinamide"
+  },
+  {
+    "id": "benzoyl-peroxide",
+    "name": "Benzoyl peroxide",
+    "inciAliases": ["Benzoyl Peroxide"],
+    "category": "benzoyl-peroxide",
+    "summary": "An antibacterial, peeling ingredient used in washes and gels made for blemish-prone skin; it can bleach fabric.",
+    "sourceUrl": "https://dermnetnz.org/topics/benzoyl-peroxide"
+  },
+  {
+    "id": "azelaic-acid",
+    "name": "Azelaic acid",
+    "inciAliases": ["Azelaic Acid"],
+    "category": "acne",
+    "summary": "A dicarboxylic acid used in creams and gels for blemish-prone and redness-prone skin.",
+    "sourceUrl": "https://dermnetnz.org/topics/azelaic-acid"
+  },
+  {
+    "id": "sulfur",
+    "name": "Sulfur",
+    "inciAliases": ["Sulfur"],
+    "category": "acne",
+    "summary": "A mineral long used in masks and spot treatments for oily, blemish-prone skin.",
+    "sourceUrl": "https://dermnetnz.org/topics/topical-treatment-for-acne"
+  },
+  {
+    "id": "tranexamic-acid",
+    "name": "Tranexamic acid",
+    "inciAliases": ["Tranexamic Acid"],
+    "category": "brightening",
+    "summary": "An amino acid derivative used in serums aimed at the look of dark patches and uneven tone.",
+    "sourceUrl": "https://dermnetnz.org/topics/tranexamic-acid"
+  },
+  {
+    "id": "kojic-acid",
+    "name": "Kojic acid",
+    "inciAliases": ["Kojic Acid"],
+    "category": "brightening",
+    "summary": "A by-product of fungal fermentation used in products aimed at the look of dark spots; it can irritate sensitive skin.",
+    "sourceUrl": "https://dermnetnz.org/topics/bleaching-agents"
+  },
+  {
+    "id": "alpha-arbutin",
+    "name": "Alpha-arbutin",
+    "inciAliases": ["Alpha-Arbutin"],
+    "category": "brightening",
+    "summary": "A plant-inspired, hydroquinone-related ingredient used in serums aimed at the look of dark spots.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "urea",
+    "name": "Urea",
+    "inciAliases": ["Urea"],
+    "category": "hydration-and-barrier",
+    "summary": "A moisture-binding ingredient naturally present in skin, used in rich creams, especially for dry or rough areas.",
+    "sourceUrl": "https://dermnetnz.org/topics/urea"
+  },
+  {
+    "id": "hyaluronic-acid",
+    "name": "Hyaluronic acid",
+    "inciAliases": ["Hyaluronic Acid", "Sodium Hyaluronate"],
+    "category": "hydration-and-barrier",
+    "summary": "A water-attracting molecule used in serums and moisturisers to help skin feel plumper and more hydrated.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "ferulic-acid",
+    "name": "Ferulic acid",
+    "inciAliases": ["Ferulic Acid"],
+    "category": "antioxidant",
+    "summary": "A plant antioxidant often paired with vitamin C in serums to help keep the formula stable.",
+    "sourceUrl": ""
+  },
+  {
+    "id": "tocopherol",
+    "name": "Tocopherol (vitamin E)",
+    "inciAliases": ["Tocopherol"],
+    "category": "antioxidant",
+    "summary": "An oil-soluble form of vitamin E used as an antioxidant and conditioning ingredient in creams and oils.",
+    "sourceUrl": ""
+  }
+]
