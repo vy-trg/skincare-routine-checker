@@ -6,6 +6,10 @@ const passport = require('passport');
 
 const pool = require('./db/pool');
 const configurePassport = require('./auth/passport');
+const { createProductStore } = require('./db/products');
+const { createRoutineStore } = require('./db/routines');
+const { createProductsRouter } = require('./routes/products');
+const { createRoutinesRouter } = require('./routes/routines');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -62,6 +66,14 @@ app.use((req, res, next) => {
 });
 
 app.use(require('./routes/auth'));
+
+// Pages that need a login (each router applies requireLogin itself).
+const productStore = createProductStore(pool);
+app.use('/products', createProductsRouter(productStore));
+app.use(
+  '/routines',
+  createRoutinesRouter({ routines: createRoutineStore(pool), products: productStore }),
+);
 
 app.use((req, res) => {
   res.status(404).render('error', {

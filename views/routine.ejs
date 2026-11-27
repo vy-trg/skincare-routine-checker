@@ -1,0 +1,86 @@
+<%- include('partials/head', { title, wide: true }) %>
+
+<h1><%= label %></h1>
+
+<h2>Products</h2>
+
+<% if (items.length === 0) { %>
+  <p>Nothing in this routine yet.</p>
+<% } else { %>
+  <ul class="list">
+    <% items.forEach((item) => { %>
+      <li class="list__item">
+        <div class="list__main"><%= item.name %></div>
+        <form method="post" action="/routines/<%= period %>/items/<%= item.id %>/delete">
+          <button type="submit" class="button button--quiet button--small">Remove</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<% if (available.length > 0) { %>
+  <form method="post" action="/routines/<%= period %>/items" class="form form--inline">
+    <div class="field">
+      <label for="product_id">Add a product</label>
+      <select id="product_id" name="product_id">
+        <% available.forEach((product) => { %>
+          <option value="<%= product.id %>"><%= product.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <button type="submit" class="button">Add</button>
+  </form>
+<% } else if (!hasAnyProduct) { %>
+  <p><a href="/products">Add a product</a> first, then you can put it in this routine.</p>
+<% } else { %>
+  <p class="field__hint">All your products are already in this routine.</p>
+<% } %>
+
+<h2>Known actives</h2>
+
+<% if (actives.length === 0) { %>
+  <p>No known actives found in this routine.</p>
+<% } else { %>
+  <ul class="list">
+    <% actives.forEach((active) => { %>
+      <li class="list__item">
+        <div class="list__main">
+          <strong><%= active.name %></strong>
+          <span class="list__meta">in <%= active.products.join(', ') %></span>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<h2>Warnings</h2>
+
+<% if (warnings.length === 0) { %>
+  <p>No warnings from the rules we have.</p>
+<% } else { %>
+  <ul class="list">
+    <% warnings.forEach((warning) => { %>
+      <li class="list__item warning warning--<%= warning.severity %>">
+        <div class="list__main">
+          <strong><%= warning.severity === 'avoid' ? 'Avoid together' : 'Use with care' %>:</strong>
+          <%= warning.details[0].name %> + <%= warning.details[1].name %>
+          <p class="warning__reason"><%= warning.reason %></p>
+          <% if (warning.inSameProduct) { %>
+            <p class="list__meta">Both are in the same product.</p>
+          <% } %>
+          <p class="list__meta"><a href="<%= warning.sourceUrl %>" rel="noopener noreferrer">Source</a></p>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<p class="field__hint">
+  We only know 28 actives and a few rules, so no warning does not mean a routine is a good fit.
+  These are general tips from public sources, not medical advice.
+</p>
+
+<p class="aside"><a href="/routines/<%= otherPeriod %>"><%= otherLabel %></a></p>
+
+<%- include('partials/foot') %>
