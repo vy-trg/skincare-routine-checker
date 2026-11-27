@@ -6,6 +6,7 @@ const passport = require('passport');
 
 const pool = require('./db/pool');
 const configurePassport = require('./auth/passport');
+const healthz = require('./routes/health');
 const { createProductStore } = require('./db/products');
 const { createRoutineStore } = require('./db/routines');
 const { createProductsRouter } = require('./routes/products');
@@ -27,6 +28,9 @@ app.set('views', path.join(__dirname, 'views'));
 if (isProduction) {
   app.set('trust proxy', 1);
 }
+
+// Render's health check. Mounted first on purpose: no static files, no session, no database.
+app.get('/healthz', healthz);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
