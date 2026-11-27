@@ -56,4 +56,27 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(require('./routes/auth'));
+
+app.use((req, res) => {
+  res.status(404).render('error', {
+    title: 'Not found',
+    heading: 'Page not found',
+    message: 'That page does not exist.',
+  });
+});
+
+// Express 5 forwards errors from async handlers here too.
+// The real error goes to the log; the user only sees a generic message.
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error(err);
+  if (res.headersSent) return next(err);
+  res.status(500).render('error', {
+    title: 'Something went wrong',
+    heading: 'Something went wrong',
+    message: 'Please try again in a moment.',
+  });
+});
+
 module.exports = app;

@@ -1,0 +1,25 @@
+<%- include('partials/head', { title }) %>
+
+<h1>Hello, <%= currentUser.display_name || currentUser.email %></h1>
+
+<dl class="facts">
+  <dt>Signed in as</dt>
+  <dd><%= currentUser.email %></dd>
+
+  <dt>Skin type</dt>
+  <dd>
+    <% if (!currentUser.skin_type) { %>
+      Not set
+    <% } else if (currentUser.skin_type === 'other' && currentUser.skin_type_other) { %>
+      <%= currentUser.skin_type_other %>
+    <% } else { %>
+      <%= currentUser.skin_type %>
+    <% } %>
+  </dd>
+</dl>
+
+<form method="post" action="/logout">
+  <button type="submit" class="button button--quiet">Log out</button>
+</form>
+
+<%- include('partials/foot') %>

@@ -1,0 +1,26 @@
+<%- include('partials/head', { title }) %>
+
+<h1>Log in</h1>
+
+<% if (errors.form) { %>
+  <p class="notice notice--error" role="alert"><%= errors.form %></p>
+<% } %>
+
+<form method="post" action="/login" class="form" novalidate>
+  <div class="field">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" autocomplete="email" autofocus
+           value="<%= values.email || '' %>">
+  </div>
+
+  <div class="field">
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password">
+  </div>
+
+  <button type="submit" class="button">Log in</button>
+</form>
+
+<p class="aside">New here? <a href="/register">Create an account</a></p>
+
+<%- include('partials/foot') %>

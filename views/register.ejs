@@ -1,0 +1,59 @@
+<%- include('partials/head', { title }) %>
+
+<h1>Create your account</h1>
+
+<% if (errors.form) { %>
+  <p class="notice notice--error" role="alert"><%= errors.form %></p>
+<% } %>
+
+<form method="post" action="/register" class="form" novalidate>
+  <div class="field">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" autocomplete="email" autofocus
+           value="<%= values.email || '' %>">
+    <% if (errors.email) { %><p class="field__error"><%= errors.email %></p><% } %>
+  </div>
+
+  <div class="field">
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="new-password"
+           minlength="8" maxlength="72" aria-describedby="password-hint">
+    <p class="field__hint" id="password-hint">8 to 72 characters.</p>
+    <% if (errors.password) { %><p class="field__error"><%= errors.password %></p><% } %>
+  </div>
+
+  <div class="field">
+    <label for="display_name">Display name <span class="optional">Optional</span></label>
+    <input id="display_name" name="display_name" type="text" autocomplete="nickname"
+           value="<%= values.display_name || '' %>">
+  </div>
+
+  <div class="field">
+    <label for="skin_type">Skin type <span class="optional">Optional</span></label>
+    <select id="skin_type" name="skin_type">
+      <option value="">Prefer not to say</option>
+      <% skinTypes.forEach((type) => { %>
+        <option value="<%= type %>" <%= values.skin_type === type ? 'selected' : '' %>>
+          <%= type.charAt(0).toUpperCase() + type.slice(1) %>
+        </option>
+      <% }) %>
+    </select>
+    <% if (errors.skin_type) { %><p class="field__error"><%= errors.skin_type %></p><% } %>
+  </div>
+
+  <%# Visible by default so the form still works without JavaScript; register.js hides it. %>
+  <div class="field" id="skin-type-other-field">
+    <label for="skin_type_other">Describe your skin type</label>
+    <input id="skin_type_other" name="skin_type_other" type="text"
+           value="<%= values.skin_type_other || '' %>">
+    <% if (errors.skin_type_other) { %><p class="field__error"><%= errors.skin_type_other %></p><% } %>
+  </div>
+
+  <button type="submit" class="button">Create account</button>
+</form>
+
+<p class="aside">Already have an account? <a href="/login">Log in</a></p>
+
+<script src="/register.js"></script>
+
+<%- include('partials/foot') %>
