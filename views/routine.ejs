@@ -77,9 +77,10 @@
 <% } %>
 
 <p class="field__hint">
-  We only know 28 actives and a few rules, so no warning does not mean a routine is a good fit.
-  These are general tips from public sources, not medical advice.
+  We only know a limited set of actives and rules, so no warning does not mean a routine is a good fit.
 </p>
+
+<%- include('partials/disclaimer') %>
 
 <p class="aside"><a href="/routines/<%= otherPeriod %>"><%= otherLabel %></a></p>
 

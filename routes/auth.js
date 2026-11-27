@@ -3,14 +3,29 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const pool = require('../db/pool');
 const { BCRYPT_COST } = require('../auth/passport');
+const actives = require('../data/actives.json');
+const { categoryLabel } = require('../public/analyse-helpers');
 const { SKIN_TYPES } = require('../lib/skin-types');
 const { normalizeEmail, validateRegistration } = require('../lib/validation');
 
 const router = express.Router();
 
+// The Known Actives panel: what the page needs and nothing else (no summaries or source URLs).
+const knownActives = actives.map(({ id, name, category, inciAliases }) => ({
+  id,
+  name,
+  category,
+  inciAliases,
+}));
+
+// Public: anyone can paste an ingredient list here. The analysis itself runs in the browser
+// against POST /api/analyze, which needs no login and no database.
 router.get('/', (req, res) => {
-  if (!req.isAuthenticated()) return res.redirect('/login');
-  res.render('home', { title: 'Home' });
+  res.render('home', {
+    title: 'Check Your Ingredients',
+    actives: knownActives,
+    categoryLabel,
+  });
 });
 
 router.get('/login', (req, res) => {
