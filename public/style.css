@@ -65,7 +65,7 @@ a { color: var(--clay); }
   color: var(--muted);
 }
 
-input, select {
+input, select, textarea {
   width: 100%;
   padding: 0.5rem 0;
   border: 0;
@@ -76,7 +76,7 @@ input, select {
   font: inherit;
 }
 
-input:focus-visible, select:focus-visible, .button:focus-visible {
+input:focus-visible, select:focus-visible, textarea:focus-visible, .button:focus-visible {
   outline: 2px solid var(--clay);
   outline-offset: 3px;
 }
@@ -116,3 +116,64 @@ input:focus-visible, select:focus-visible, .button:focus-visible {
 .facts { margin: 0 0 2rem; }
 .facts dt { font-size: 0.8125rem; color: var(--muted); }
 .facts dd { margin: 0 0 1rem; font-family: var(--serif); font-size: 1.15rem; }
+
+/* Navigation, lists and warnings for the product and routine pages */
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+
+.masthead__nav { display: flex; gap: 1.25rem; font-size: 0.9375rem; }
+.masthead__nav a { color: var(--ink); }
+
+.page--wide { max-width: 40rem; }
+
+h2 {
+  margin: 2.5rem 0 0.75rem;
+  font: 400 1.35rem/1.2 var(--serif);
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  resize: vertical;
+}
+
+.links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin: 0 0 2rem; }
+
+.list { margin: 0 0 1rem; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+
+.list__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.list__main { min-width: 0; overflow-wrap: anywhere; }
+.list__main p { margin: 0.25rem 0 0; }
+.list__meta { display: block; font-size: 0.8125rem; color: var(--muted); }
+
+details { margin-top: 0.35rem; font-size: 0.875rem; }
+summary { cursor: pointer; color: var(--muted); }
+.ingredients { white-space: pre-wrap; }
+
+.button--small { padding: 0.3rem 0.8rem; font-size: 0.875rem; }
+
+.form--inline { grid-template-columns: 1fr auto; align-items: end; margin-top: 1.25rem; }
+
+.warning { border-left: 3px solid var(--rule); padding-left: 0.9rem; }
+.warning--avoid { border-left-color: var(--brick); }
+.warning--caution { border-left-color: var(--clay); }
+.warning__reason { max-width: 34rem; }

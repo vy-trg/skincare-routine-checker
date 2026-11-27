@@ -9,5 +9,12 @@
 <body>
 <header class="masthead">
   <a class="masthead__name" href="/">Skincare routine checker</a>
+  <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+    <nav class="masthead__nav" aria-label="Main">
+      <a href="/products">Products</a>
+      <a href="/routines/am">Morning</a>
+      <a href="/routines/pm">Evening</a>
+    </nav>
+  <% } %>
 </header>
-<main class="page">
+<main class="page<%= typeof wide !== 'undefined' && wide ? ' page--wide' : '' %>">

@@ -1,0 +1,52 @@
+<%- include('partials/head', { title, wide: true }) %>
+
+<h1>My products</h1>
+
+<% if (products.length === 0) { %>
+  <p>No products yet. Add one below, then put it in your morning or evening routine.</p>
+<% } else { %>
+  <ul class="list">
+    <% products.forEach((product) => { %>
+      <li class="list__item">
+        <div class="list__main">
+          <strong><%= product.name %></strong>
+          <% if (product.actives.length > 0) { %>
+            <span class="list__meta">Known actives: <%= product.actives.join(', ') %></span>
+          <% } else { %>
+            <span class="list__meta">No known actives found</span>
+          <% } %>
+          <details>
+            <summary>Ingredients</summary>
+            <p class="ingredients"><%= product.ingredients %></p>
+          </details>
+        </div>
+        <form method="post" action="/products/<%= product.id %>/delete">
+          <button type="submit" class="button button--quiet button--small">Delete</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+  <p class="field__hint">Deleting a product also removes it from your routines.</p>
+<% } %>
+
+<h2>Add a product</h2>
+
+<form method="post" action="/products" class="form" novalidate>
+  <div class="field">
+    <label for="name">Name</label>
+    <input id="name" name="name" type="text" maxlength="100" autocomplete="off"
+           value="<%= values.name || '' %>">
+    <% if (errors.name) { %><p class="field__error"><%= errors.name %></p><% } %>
+  </div>
+
+  <div class="field">
+    <label for="ingredients">Ingredients</label>
+    <textarea id="ingredients" name="ingredients" rows="6"><%= values.ingredients || '' %></textarea>
+    <p class="field__hint">Paste the list from the label, separated by commas.</p>
+    <% if (errors.ingredients) { %><p class="field__error"><%= errors.ingredients %></p><% } %>
+  </div>
+
+  <button type="submit" class="button">Add product</button>
+</form>
+
+<%- include('partials/foot') %>
