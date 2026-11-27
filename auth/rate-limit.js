@@ -12,8 +12,7 @@
 // The limit is keyed on req.ip. Behind a proxy that is only the real visitor if Express trusts the
 // right number of proxies: see lib/trust-proxy.js (TRUST_PROXY_HOPS).
 const rateLimit = require('express-rate-limit');
-const { SKIN_TYPES } = require('../lib/skin-types');
-const { normalizeEmail, validateRegistration } = require('../lib/validation');
+const { loginLocals, registerLocals } = require('./form-locals');
 const { proxyChainWarning } = require('../lib/proxy-warning');
 
 const RATE_LIMIT = { windowMs: 15 * 60 * 1000, limit: 10 };
@@ -31,30 +30,6 @@ function waitMinutes(resetTime, now = Date.now(), windowMs = RATE_LIMIT.windowMs
 function limitMessage(minutes) {
   const unit = minutes === 1 ? 'minute' : 'minutes';
   return `Too many attempts. Please wait about ${minutes} ${unit} and try again.`;
-}
-
-// What the form shows again when the limit is hit. The password is never sent back.
-function loginLocals(req, message) {
-  return {
-    title: 'Log In',
-    errors: { form: message },
-    values: { email: normalizeEmail(req.body && req.body.email) },
-  };
-}
-
-function registerLocals(req, message) {
-  const { clean } = validateRegistration(req.body || {});
-  return {
-    title: 'Create Account',
-    errors: { form: message },
-    values: {
-      email: clean.email,
-      display_name: clean.displayName,
-      skin_type: clean.skinType,
-      skin_type_other: clean.skinTypeOther,
-    },
-    skinTypes: SKIN_TYPES,
-  };
 }
 
 // express-rate-limit calls this when someone is over the limit. It has already set Retry-After.
