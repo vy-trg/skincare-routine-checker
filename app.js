@@ -25,6 +25,11 @@ if (isProduction) {
 }
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+// The JSON API is mounted before the session middleware on purpose: it needs
+// no login and must never touch the session store or the database.
+app.use('/api', require('./routes/api'));
+
 app.use(express.urlencoded({ extended: false }));
 
 app.use(
