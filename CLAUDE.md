@@ -4,8 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-- `npm run dev` runs `node --env-file=.env --watch server.js`. Needs Node >= 20.6 and a `.env` with `DATABASE_URL` and `SESSION_SECRET` (see `.env.example`). The port comes from `PORT` and defaults to 3000.
-- `npm test` runs `node --test`, which picks up every `*.test.js` file.
+- `npm run dev` runs `node --env-file=.env --watch server.js`. Needs Node 22.x (pinned in `engines`, same major as CI; other versions only get an npm warning) and a `.env` with `DATABASE_URL` and `SESSION_SECRET` (see `.env.example`). The port comes from `PORT` and defaults to 3000.
+- `npm start` runs `node server.js` (what Render runs; it reads no `.env`, so the host must provide `DATABASE_URL`, `SESSION_SECRET` and `NODE_ENV=production`). Use `npm run dev` locally.
+- `npm test` runs `node --test`, which picks up every `*.test.js` file. `package.test.js` fails if `start`, the Node pin and the Node version in CI drift apart.
 - Run one test file: `node --test lib/validation.test.js`. Filter by name: `node --test --test-name-pattern="password" lib/validation.test.js`.
 - There is no build step and no linter configured.
 - CI (`.github/workflows/ci.yml`, job `test`) runs `npm ci` and `npm test` on Node 22 for every pull request and for pushes to `main`. It has no database and no secrets.
@@ -21,6 +22,7 @@ Express 5, EJS views, PostgreSQL on Neon through the `pg` package, Passport (loc
 - `server.js` only calls `listen`. `app.js` builds and exports the Express app (middleware order matters: static files, body parser, session, `passport.initialize()`, `passport.session()`, then `res.locals.currentUser`, then routes, then the 404 and error handlers).
 - `db/pool.js` is the single shared `pg` Pool. `db/schema.sql` is the source of truth for the schema; there is no migration tool.
 - `routes/auth.js` has the page routes: `/` (the home page, public: anyone can analyse an ingredient list), `/login`, `/register`, `/logout` (logout is POST).
+- `GET /healthz` (`routes/health.js`) is Render's health check. `app.js` mounts it first, before static files, `/api` and the session, so it never touches the database; it answers 200 even if the database is down.
 - `routes/api.js` is the JSON API (`POST /api/analyze`, body `{ "text": "..." }`). `app.js` mounts it **before** the session middleware on purpose: it needs no login and must never touch the session store or the database. Its logic lives in the pure `lib/analyze.js`.
 - `routes/products.js` (`/products`) and `routes/routines.js` (`/routines/am`, `/routines/pm`) are factories (`createProductsRouter(store)`, `createRoutinesRouter({ routines, products })`) that apply `requireLogin` from `auth/require-login.js` (anonymous pages redirect to `/login`, anonymous `/api` paths get 401 JSON). `app.js` wires them to the stores in `db/products.js` and `db/routines.js`, which are also factories that receive the pool so tests can pass a fake one (`db/stores.test.js`).
 - **Ownership rule:** every query is filtered by the user id from `req.user.id`, never by an id from the body or URL. A routine is never addressed by id: it is "this user's AM/PM routine", found by `(user_id, period)` and created on first add. Product deletes and routine-item changes use `WHERE ... AND user_id = $n` and a miss (missing or someone else's id) is a 404. Adding a product to a routine first checks that the product is the user's, because `routine_items` does not enforce it. Ids from URLs and forms go through `parseId` in `lib/products.js` (plain positive integers that fit a Postgres INTEGER, else 404), so a bad id never reaches Postgres. Any new user-owned query must follow the same pattern.
