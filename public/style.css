@@ -1,0 +1,118 @@
+:root {
+  --paper: #f3eee4;
+  --ink: #26221e;
+  --muted: #6d655b;
+  --rule: #cfc6b6;
+  --clay: #9c4a2f;
+  --brick: #a1281c;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1rem/1.55 var(--sans);
+}
+
+.masthead {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.masthead__name {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.page {
+  max-width: 28rem;
+  margin: 0 0 4rem clamp(1.5rem, 12vw, 9rem);
+  padding: 2.5rem 1.5rem 0 0;
+}
+
+@media (max-width: 40rem) {
+  .page { margin-left: 1.5rem; }
+}
+
+h1 {
+  margin: 0 0 1.75rem;
+  font: 400 2rem/1.15 var(--serif);
+}
+
+a { color: var(--clay); }
+
+.form { display: grid; gap: 1.4rem; }
+
+.field label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.optional {
+  margin-left: 0.4rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+input, select {
+  width: 100%;
+  padding: 0.5rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+input:focus-visible, select:focus-visible, .button:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 3px;
+}
+
+.field__hint, .field__error {
+  margin: 0.3rem 0 0;
+  font-size: 0.8125rem;
+}
+
+.field__hint { color: var(--muted); }
+.field__error { color: var(--brick); }
+
+.notice {
+  margin: 0 0 1.5rem;
+  padding: 0.25rem 0 0.25rem 0.9rem;
+  border-left: 3px solid var(--brick);
+}
+
+.button {
+  justify-self: start;
+  padding: 0.65rem 1.4rem;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:hover { background: var(--clay); border-color: var(--clay); }
+
+.button--quiet { background: transparent; color: var(--ink); }
+.button--quiet:hover { color: var(--paper); }
+
+.aside { margin-top: 2rem; color: var(--muted); }
+
+.facts { margin: 0 0 2rem; }
+.facts dt { font-size: 0.8125rem; color: var(--muted); }
+.facts dd { margin: 0 0 1rem; font-family: var(--serif); font-size: 1.15rem; }
