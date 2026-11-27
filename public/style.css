@@ -193,6 +193,62 @@ summary { cursor: pointer; color: var(--muted); }
   --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+/* ------------------------------------------------------------------
+   Category colours: THE ONE PLACE they are defined.
+   Five families, grouped by what the actives do; each category points at its family.
+   bg = chip background, fg = chip text (>= 4.5:1 on bg), mark = icon and chip border (>= 3:1 on the page).
+   lib/category-colours.test.js checks every category in data/actives.json and the contrast.
+   A new category needs its three --cat-<id>-* variables and a [data-category] rule below.
+   Colour only tells categories apart: a chip always carries its text. It says nothing about safety.
+   ------------------------------------------------------------------ */
+:root {
+  --fam-exfoliant-bg: #e1e9d6;          --fam-exfoliant-fg: #2f4a24;          --fam-exfoliant-mark: #5f8050;
+  --fam-retinoid-bg: #ece0ea;           --fam-retinoid-fg: #593356;           --fam-retinoid-mark: #8a5a86;
+  --fam-antioxidant-bg: #f2e5bd;        --fam-antioxidant-fg: #5e4208;        --fam-antioxidant-mark: #a8791a;
+  --fam-brightening-acne-bg: #dce6ee;   --fam-brightening-acne-fg: #27455f;   --fam-brightening-acne-mark: #55799a;
+  --fam-hydration-bg: #d5eae7;          --fam-hydration-fg: #1f524d;          --fam-hydration-mark: #3f8a82;
+
+  --cat-aha-bg: var(--fam-exfoliant-bg);  --cat-aha-fg: var(--fam-exfoliant-fg);  --cat-aha-mark: var(--fam-exfoliant-mark);
+  --cat-pha-bg: var(--fam-exfoliant-bg);  --cat-pha-fg: var(--fam-exfoliant-fg);  --cat-pha-mark: var(--fam-exfoliant-mark);
+  --cat-bha-bg: var(--fam-exfoliant-bg);  --cat-bha-fg: var(--fam-exfoliant-fg);  --cat-bha-mark: var(--fam-exfoliant-mark);
+  --cat-retinoid-bg: var(--fam-retinoid-bg);  --cat-retinoid-fg: var(--fam-retinoid-fg);  --cat-retinoid-mark: var(--fam-retinoid-mark);
+  --cat-vitamin-c-bg: var(--fam-antioxidant-bg);  --cat-vitamin-c-fg: var(--fam-antioxidant-fg);  --cat-vitamin-c-mark: var(--fam-antioxidant-mark);
+  --cat-antioxidant-bg: var(--fam-antioxidant-bg);  --cat-antioxidant-fg: var(--fam-antioxidant-fg);  --cat-antioxidant-mark: var(--fam-antioxidant-mark);
+  --cat-brightening-bg: var(--fam-brightening-acne-bg);  --cat-brightening-fg: var(--fam-brightening-acne-fg);  --cat-brightening-mark: var(--fam-brightening-acne-mark);
+  --cat-acne-bg: var(--fam-brightening-acne-bg);  --cat-acne-fg: var(--fam-brightening-acne-fg);  --cat-acne-mark: var(--fam-brightening-acne-mark);
+  --cat-benzoyl-peroxide-bg: var(--fam-brightening-acne-bg);  --cat-benzoyl-peroxide-fg: var(--fam-brightening-acne-fg);  --cat-benzoyl-peroxide-mark: var(--fam-brightening-acne-mark);
+  --cat-hydration-and-barrier-bg: var(--fam-hydration-bg);  --cat-hydration-and-barrier-fg: var(--fam-hydration-fg);  --cat-hydration-and-barrier-mark: var(--fam-hydration-mark);
+
+  /* No known active in a product, or a category this style sheet does not know: a quiet grey */
+  --cat-none-bg: #e8e2d6;  --cat-none-fg: #4f483f;  --cat-none-mark: #8a8175;
+
+  --seg-track: #e8e1d3; /* the track of the AM | PM toggle */
+}
+
+[data-category="aha"] { --c-bg: var(--cat-aha-bg); --c-fg: var(--cat-aha-fg); --c-mark: var(--cat-aha-mark); }
+[data-category="pha"] { --c-bg: var(--cat-pha-bg); --c-fg: var(--cat-pha-fg); --c-mark: var(--cat-pha-mark); }
+[data-category="bha"] { --c-bg: var(--cat-bha-bg); --c-fg: var(--cat-bha-fg); --c-mark: var(--cat-bha-mark); }
+[data-category="retinoid"] { --c-bg: var(--cat-retinoid-bg); --c-fg: var(--cat-retinoid-fg); --c-mark: var(--cat-retinoid-mark); }
+[data-category="vitamin-c"] { --c-bg: var(--cat-vitamin-c-bg); --c-fg: var(--cat-vitamin-c-fg); --c-mark: var(--cat-vitamin-c-mark); }
+[data-category="antioxidant"] { --c-bg: var(--cat-antioxidant-bg); --c-fg: var(--cat-antioxidant-fg); --c-mark: var(--cat-antioxidant-mark); }
+[data-category="brightening"] { --c-bg: var(--cat-brightening-bg); --c-fg: var(--cat-brightening-fg); --c-mark: var(--cat-brightening-mark); }
+[data-category="acne"] { --c-bg: var(--cat-acne-bg); --c-fg: var(--cat-acne-fg); --c-mark: var(--cat-acne-mark); }
+[data-category="benzoyl-peroxide"] { --c-bg: var(--cat-benzoyl-peroxide-bg); --c-fg: var(--cat-benzoyl-peroxide-fg); --c-mark: var(--cat-benzoyl-peroxide-mark); }
+[data-category="hydration-and-barrier"] { --c-bg: var(--cat-hydration-and-barrier-bg); --c-fg: var(--cat-hydration-and-barrier-fg); --c-mark: var(--cat-hydration-and-barrier-mark); }
+
+/* A category chip: the name of an active, or of a category, in its category colour */
+.chip {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border: 1px solid var(--cat-none-mark);
+  border: 1px solid color-mix(in srgb, var(--c-mark, var(--cat-none-mark)) 45%, transparent);
+  border-radius: 2px;
+  background: var(--c-bg, var(--cat-none-bg));
+  color: var(--c-fg, var(--cat-none-fg));
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
 .status-live {
   position: absolute;
   width: 1px;
