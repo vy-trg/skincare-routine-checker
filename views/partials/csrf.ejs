@@ -1,0 +1,2 @@
+<%# Include this inside every form that posts. csrfToken() is set up in auth/csrf.js (attachToken). %>
+<input type="hidden" name="_csrf" value="<%= typeof csrfToken === 'function' ? csrfToken() : '' %>">

@@ -15,6 +15,7 @@
       <a href="/routines/am">Morning</a>
       <a href="/routines/pm">Evening</a>
       <form method="post" action="/logout" class="masthead__logout">
+        <%- include('csrf') %>
         <button type="submit" class="masthead__link">Log Out</button>
       </form>
     <% } else { %>

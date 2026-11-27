@@ -3,9 +3,11 @@ const express = require('express');
 const session = require('express-session');
 const PgSession = require('connect-pg-simple')(session);
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
 
 const pool = require('./db/pool');
 const configurePassport = require('./auth/passport');
+const { createCsrf } = require('./auth/csrf');
 const { parseTrustProxyHops } = require('./lib/trust-proxy');
 const healthz = require('./routes/health');
 const { createProductStore } = require('./db/products');
@@ -18,6 +20,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 if (!process.env.SESSION_SECRET) {
   throw new Error('SESSION_SECRET is not set. Add it to .env (see .env.example).');
 }
+
+const csrf = createCsrf({ sessionSecret: process.env.SESSION_SECRET, isProduction });
 
 const app = express();
 
@@ -76,6 +80,14 @@ app.use((req, res, next) => {
   next();
 });
 
+// CSRF check for every POST below this point (the form token must match the csrf cookie and the session).
+// It must stay AFTER the session and passport (it reads the session id) and BEFORE the routes, so a POST
+// with a bad token is refused before the login and register rate limits and does not count toward them.
+// /healthz and /api are mounted above it on purpose and are not affected. See auth/csrf.js.
+app.use(cookieParser());
+app.use(csrf.attachToken);
+app.use(csrf.protection);
+
 app.use(require('./routes/auth'));
 
 // Pages that need a login (each router applies requireLogin itself).
@@ -93,6 +105,9 @@ app.use((req, res) => {
     message: 'That page does not exist.',
   });
 });
+
+// A POST that failed the CSRF check gets a friendly 403 page; every other error goes on to the handler below.
+app.use(csrf.errorHandler);
 
 // Express 5 forwards errors from async handlers here too.
 // The real error goes to the log; the user only sees a generic message.

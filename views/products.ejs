@@ -21,6 +21,7 @@
           </details>
         </div>
         <form method="post" action="/products/<%= product.id %>/delete">
+          <%- include('partials/csrf') %>
           <button type="submit" class="button button--quiet button--small">Delete</button>
         </form>
       </li>
@@ -32,6 +33,7 @@
 <h2>Add a Product</h2>
 
 <form method="post" action="/products" class="form" novalidate>
+  <%- include('partials/csrf') %>
   <div class="field">
     <label for="name">Name</label>
     <input id="name" name="name" type="text" maxlength="100" autocomplete="off"
