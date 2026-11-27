@@ -5,7 +5,7 @@
     "b": "retinoid",
     "severity": "caution",
     "scope": "same-routine",
-    "reason": "Chemical exfoliants and retinoids are often advised to be used at different times because exfoliating while using a retinoid may worsen dryness or cause breakouts.",
+    "reason": "The source says exfoliating while using prescription retinoids or retinol may worsen dryness or cause breakouts, and it describes chemical exfoliants as alpha and beta hydroxy acids, so these are often advised to be used at different times.",
     "sourceUrl": "https://www.aad.org/public/everyday-care/skin-care-secrets/routine/safely-exfoliate-at-home"
   },
   {
@@ -14,7 +14,7 @@
     "b": "benzoyl-peroxide",
     "severity": "caution",
     "scope": "same-routine",
-    "reason": "Chemical exfoliants and benzoyl peroxide are often advised to be used at different times because exfoliating while using benzoyl peroxide may worsen dryness or cause breakouts.",
+    "reason": "The source says exfoliating while using benzoyl peroxide may worsen dryness or cause breakouts, and it describes chemical exfoliants as alpha and beta hydroxy acids, so these are often advised to be used at different times.",
     "sourceUrl": "https://www.aad.org/public/everyday-care/skin-care-secrets/routine/safely-exfoliate-at-home"
   },
   {
