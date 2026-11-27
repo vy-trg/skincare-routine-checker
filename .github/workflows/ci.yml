@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # package.json engines is ">=20.6" (needed for node --env-file), so pin one
+          # supported version instead of letting a range pick the newest release.
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Tests are pure unit tests: no database, no secrets, no .env.
+      - run: npm test
