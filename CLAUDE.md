@@ -20,8 +20,11 @@ Express 5, EJS views, PostgreSQL on Neon through the `pg` package, Passport (loc
 
 - `server.js` only calls `listen`. `app.js` builds and exports the Express app (middleware order matters: static files, body parser, session, `passport.initialize()`, `passport.session()`, then `res.locals.currentUser`, then routes, then the 404 and error handlers).
 - `db/pool.js` is the single shared `pg` Pool. `db/schema.sql` is the source of truth for the schema; there is no migration tool.
-- `routes/auth.js` has all current routes: `/`, `/login`, `/register`, `/logout` (logout is POST).
+- `routes/auth.js` has the page routes: `/`, `/login`, `/register`, `/logout` (logout is POST).
+- `routes/api.js` is the JSON API (`POST /api/analyze`, body `{ "text": "..." }`). `app.js` mounts it **before** the session middleware on purpose: it needs no login and must never touch the session store or the database. Its logic lives in the pure `lib/analyze.js`.
 - `auth/passport.js` exports `configurePassport(passport, pool)` as the module itself and `BCRYPT_COST` as a property of it. It defines the local strategy (login field is `email`), `serializeUser` (stores only the user id) and `deserializeUser`.
+- `lib/ingredients.js` reads pasted ingredient lists: `parseIngredients` splits and normalises (brackets stay attached, `1,2-Hexanediol` is not split, input is capped at 5,000 characters) and `findActives` matches the items against the aliases in `data/actives.json`. Matching is exact on the whole name, ignoring case and treating hyphens like spaces; there is no substring or fuzzy matching, so "Retinol" never matches "Retinyl Palmitate".
+- `data/actives.json` lists the known actives (`id`, `name`, `inciAliases`, `category`, `summary`, `sourceUrl`). Every non-empty `sourceUrl` must be a page that was actually opened and names that exact ingredient; never add a URL from memory. `data/actives.test.js` checks the shape (unique ids and aliases, allowed categories).
 - `lib/validation.js` holds the pure validation and normalisation helpers (email, password, display name, skin type). `lib/skin-types.js` is the list of skin types and must match the CHECK constraint on `users.skin_type` in `db/schema.sql`.
 - `views/` has EJS templates; `views/partials/head.ejs` and `foot.ejs` wrap every page. `public/` has static CSS and the small script that shows the "Other" skin type field.
 

@@ -3,6 +3,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { matchKey } = require('../lib/ingredients');
 
 const FILE = path.join(__dirname, 'actives.json');
 
@@ -70,6 +71,18 @@ test('no INCI alias appears twice, within or across entries', () => {
     for (const alias of inciAliases) {
       const key = normaliseAlias(alias);
       assert.equal(owner.has(key), false, `alias "${alias}" in ${id} is already used by ${owner.get(key)}`);
+      owner.set(key, id);
+    }
+  }
+});
+
+test('no two aliases collide once hyphens and spaces are treated alike', () => {
+  // findActives compares names with matchKey, so "X-Y" and "X Y" would be the same alias.
+  const owner = new Map();
+  for (const { id, inciAliases } of actives) {
+    for (const alias of inciAliases) {
+      const key = matchKey(alias);
+      assert.equal(owner.has(key), false, `alias "${alias}" in ${id} collides with ${owner.get(key)}`);
       owner.set(key, id);
     }
   }
