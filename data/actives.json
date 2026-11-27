@@ -21,7 +21,7 @@
     "inciAliases": ["Retinyl Palmitate"],
     "category": "retinoid",
     "summary": "A gentler, ester form of vitamin A often added in small amounts to moisturisers.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13649105"
   },
   {
     "id": "hydroxypinacolone-retinoate",
@@ -29,7 +29,7 @@
     "inciAliases": ["Hydroxypinacolone Retinoate"],
     "category": "retinoid",
     "summary": "A newer vitamin A ester used in serums as an alternative to retinol.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13649105"
   },
   {
     "id": "adapalene",
@@ -38,14 +38,6 @@
     "category": "retinoid",
     "summary": "A synthetic retinoid sold as a gel or cream, available without a prescription in some countries and by prescription in others.",
     "sourceUrl": "https://dermnetnz.org/topics/topical-retinoids"
-  },
-  {
-    "id": "bakuchiol",
-    "name": "Bakuchiol",
-    "inciAliases": ["Bakuchiol"],
-    "category": "retinoid-alternative",
-    "summary": "A plant-derived ingredient marketed as a gentler alternative to retinol; it is not a vitamin A derivative.",
-    "sourceUrl": ""
   },
   {
     "id": "glycolic-acid",
@@ -69,7 +61,7 @@
     "inciAliases": ["Mandelic Acid"],
     "category": "aha",
     "summary": "An alpha hydroxy acid with larger molecules than glycolic acid, used in exfoliating serums and peels.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6122508/"
   },
   {
     "id": "gluconolactone",
@@ -77,7 +69,7 @@
     "inciAliases": ["Gluconolactone"],
     "category": "pha",
     "summary": "A polyhydroxy acid used for gentle exfoliation in products made for skin that dislikes stronger acids.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3047947/"
   },
   {
     "id": "lactobionic-acid",
@@ -85,7 +77,7 @@
     "inciAliases": ["Lactobionic Acid"],
     "category": "pha",
     "summary": "A polyhydroxy acid used for mild exfoliation and as a moisture-binding ingredient.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3362829/"
   },
   {
     "id": "salicylic-acid",
@@ -94,14 +86,6 @@
     "category": "bha",
     "summary": "An oil-soluble beta hydroxy acid used in cleansers and treatments for oily or clogged-looking skin.",
     "sourceUrl": "https://dermnetnz.org/topics/salicylic-acid"
-  },
-  {
-    "id": "betaine-salicylate",
-    "name": "Betaine salicylate",
-    "inciAliases": ["Betaine Salicylate"],
-    "category": "bha",
-    "summary": "A salicylic acid derivative used as a milder-feeling alternative in leave-on products.",
-    "sourceUrl": ""
   },
   {
     "id": "l-ascorbic-acid",
@@ -117,7 +101,7 @@
     "inciAliases": ["Sodium Ascorbyl Phosphate"],
     "category": "vitamin-c",
     "summary": "A water-soluble, more stable derivative of vitamin C used in lightweight serums and creams.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13588479"
   },
   {
     "id": "magnesium-ascorbyl-phosphate",
@@ -125,7 +109,7 @@
     "inciAliases": ["Magnesium Ascorbyl Phosphate"],
     "category": "vitamin-c",
     "summary": "A water-soluble, stable derivative of vitamin C found in gentler vitamin C products.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13588479"
   },
   {
     "id": "ascorbyl-glucoside",
@@ -133,7 +117,7 @@
     "inciAliases": ["Ascorbyl Glucoside"],
     "category": "vitamin-c",
     "summary": "Vitamin C bound to a sugar molecule to make it more stable in water-based formulas.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13588479"
   },
   {
     "id": "ascorbyl-tetraisopalmitate",
@@ -141,7 +125,7 @@
     "inciAliases": ["Ascorbyl Tetraisopalmitate"],
     "category": "vitamin-c",
     "summary": "An oil-soluble vitamin C derivative used in creams and oil-based serums.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13588479"
   },
   {
     "id": "ethyl-ascorbic-acid",
@@ -149,7 +133,7 @@
     "inciAliases": ["3-O-Ethyl Ascorbic Acid", "Ethyl Ascorbic Acid"],
     "category": "vitamin-c",
     "summary": "A stable vitamin C derivative that dissolves in both water and oil, used in serums.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9495646/"
   },
   {
     "id": "niacinamide",
@@ -205,7 +189,7 @@
     "inciAliases": ["Alpha-Arbutin"],
     "category": "brightening",
     "summary": "A plant-inspired, hydroquinone-related ingredient used in serums aimed at the look of dark spots.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8301119/"
   },
   {
     "id": "urea",
@@ -221,7 +205,7 @@
     "inciAliases": ["Hyaluronic Acid", "Sodium Hyaluronate"],
     "category": "hydration-and-barrier",
     "summary": "A water-attracting molecule used in serums and moisturisers to help skin feel plumper and more hydrated.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12731180/"
   },
   {
     "id": "ferulic-acid",
@@ -229,7 +213,7 @@
     "inciAliases": ["Ferulic Acid"],
     "category": "antioxidant",
     "summary": "A plant antioxidant often paired with vitamin C in serums to help keep the formula stable.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12175833/"
   },
   {
     "id": "tocopherol",
@@ -237,6 +221,6 @@
     "inciAliases": ["Tocopherol"],
     "category": "antioxidant",
     "summary": "An oil-soluble form of vitamin E used as an antioxidant and conditioning ingredient in creams and oils.",
-    "sourceUrl": ""
+    "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4976416/"
   }
 ]
