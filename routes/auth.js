@@ -5,7 +5,6 @@ const pool = require('../db/pool');
 const { BCRYPT_COST } = require('../auth/passport');
 const { loginResponse } = require('../auth/login-response');
 const { createAuthLimiters } = require('../auth/rate-limit');
-const { describeProxyChain } = require('../lib/proxy-diagnostic'); // TODO(temporary)
 const actives = require('../data/actives.json');
 const { categoryLabel } = require('../public/analyse-helpers');
 const { SKIN_TYPES } = require('../lib/skin-types');
@@ -38,10 +37,6 @@ router.get('/login', (req, res) => {
   if (req.isAuthenticated()) return res.redirect('/');
   res.render('login', { title: 'Log In', errors: {}, values: {} });
 });
-
-// TODO(temporary): remove this logger (and lib/proxy-diagnostic.js) once TRUST_PROXY_HOPS is settled.
-// It runs before the limiter so blocked requests are logged too.
-router.post('/login', (req, res, next) => { console.log(describeProxyChain(req)); next(); });
 
 router.post('/login', loginLimiter, (req, res, next) => {
   // Normalise here so the LocalStrategy always sees a trimmed, lowercase email.

@@ -26,7 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // On Render the app sits behind a proxy that terminates HTTPS. Without this,
 // Express thinks every request is plain HTTP and never sends a `secure` cookie.
-// How many proxies to trust is set with TRUST_PROXY_HOPS (default 1): it decides what req.ip is,
+// How many proxies to trust is set with TRUST_PROXY_HOPS (default 3, the proxy chain on Render): it decides what req.ip is,
 // and the login and register rate limits are keyed on it. See lib/trust-proxy.js.
 if (isProduction) {
   const { hops, ignored } = parseTrustProxyHops(process.env.TRUST_PROXY_HOPS);
