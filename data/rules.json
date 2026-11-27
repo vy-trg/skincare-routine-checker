@@ -1,0 +1,38 @@
+[
+  {
+    "id": "aha-retinoid",
+    "a": "aha",
+    "b": "retinoid",
+    "severity": "caution",
+    "scope": "same-routine",
+    "reason": "Chemical exfoliants and retinoids are often advised to be used at different times because exfoliating while using a retinoid may worsen dryness or cause breakouts.",
+    "sourceUrl": "https://www.aad.org/public/everyday-care/skin-care-secrets/routine/safely-exfoliate-at-home"
+  },
+  {
+    "id": "aha-benzoyl-peroxide",
+    "a": "aha",
+    "b": "benzoyl-peroxide",
+    "severity": "caution",
+    "scope": "same-routine",
+    "reason": "Chemical exfoliants and benzoyl peroxide are often advised to be used at different times because exfoliating while using benzoyl peroxide may worsen dryness or cause breakouts.",
+    "sourceUrl": "https://www.aad.org/public/everyday-care/skin-care-secrets/routine/safely-exfoliate-at-home"
+  },
+  {
+    "id": "salicylic-acid-retinoid",
+    "a": "salicylic-acid",
+    "b": "retinoid",
+    "severity": "caution",
+    "scope": "same-routine",
+    "reason": "Salicylic acid and topical retinoids are often advised to be used at different times because DermNet lists topical retinoids among products not to combine with salicylic acid on the same area unless a doctor says so.",
+    "sourceUrl": "https://dermnetnz.org/topics/salicylic-acid"
+  },
+  {
+    "id": "salicylic-acid-benzoyl-peroxide",
+    "a": "salicylic-acid",
+    "b": "benzoyl-peroxide",
+    "severity": "caution",
+    "scope": "same-routine",
+    "reason": "Salicylic acid and benzoyl peroxide are often advised to be used at different times because DermNet lists benzoyl peroxide among products not to combine with salicylic acid on the same area unless a doctor says so.",
+    "sourceUrl": "https://dermnetnz.org/topics/salicylic-acid"
+  }
+]
