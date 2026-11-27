@@ -6,6 +6,7 @@ const passport = require('passport');
 
 const pool = require('./db/pool');
 const configurePassport = require('./auth/passport');
+const { parseTrustProxyHops } = require('./lib/trust-proxy');
 const healthz = require('./routes/health');
 const { createProductStore } = require('./db/products');
 const { createRoutineStore } = require('./db/routines');
@@ -25,8 +26,14 @@ app.set('views', path.join(__dirname, 'views'));
 
 // On Render the app sits behind a proxy that terminates HTTPS. Without this,
 // Express thinks every request is plain HTTP and never sends a `secure` cookie.
+// How many proxies to trust is set with TRUST_PROXY_HOPS (default 1): it decides what req.ip is,
+// and the login and register rate limits are keyed on it. See lib/trust-proxy.js.
 if (isProduction) {
-  app.set('trust proxy', 1);
+  const { hops, ignored } = parseTrustProxyHops(process.env.TRUST_PROXY_HOPS);
+  if (ignored) {
+    console.warn(`TRUST_PROXY_HOPS must be a whole number from 1 to 10. Ignoring it and using ${hops}.`);
+  }
+  app.set('trust proxy', hops);
 }
 
 // Render's health check. Mounted first on purpose: no static files, no session, no database.

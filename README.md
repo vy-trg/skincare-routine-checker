@@ -54,8 +54,11 @@ npm test                          # no database or .env needed
 
 In production, set `DATABASE_URL`, `SESSION_SECRET` and `NODE_ENV=production`, run `npm start`, and point the health check at `/healthz`. That endpoint only shows the process is up: it does not check the database.
 
+Optional: `TRUST_PROXY_HOPS` (a whole number from 1 to 10, default 1) is how many proxies sit in front of the app in production. It decides which IP address the rate limits see, so check it after deploying (see Security Choices).
+
 ## Security Choices
 
+- Rate limiting: `POST /login` and `POST /register` allow 10 attempts per 15 minutes per IP address (`express-rate-limit`). Login counts only failed attempts; register counts every attempt. Past the limit the form comes back with status 429, the email still filled in and how long to wait. The counters live in memory, so they reset whenever the app restarts, redeploys or wakes up from sleep, and they do not work across multiple instances (each instance counts on its own). Behind a proxy the limit is only per visitor if `TRUST_PROXY_HOPS` matches the real number of proxies: too low and everyone shares one limit, too high and a visitor can fake their address with an `X-Forwarded-For` header.
 - Passwords are hashed with bcrypt at cost 12, must be 8 to 72 characters, and are never trimmed.
 - An unknown email still runs a bcrypt comparison against a dummy hash, and a wrong password and an unknown email give the same message, so login does not reveal which emails exist.
 - Sessions are stored in Postgres. The browser only holds a signed session id in an `httpOnly`, `sameSite=lax` cookie (`secure` in production). The password hash is never loaded into `req.user`.
@@ -65,7 +68,7 @@ In production, set `DATABASE_URL`, `SESSION_SECRET` and `NODE_ENV=production`, r
 
 ## Known Limitations
 
-- No CSRF token (the `sameSite=lax` cookie is the only protection), no login rate limiting, and registration reveals whether an email is already registered.
+- No CSRF token (the `sameSite=lax` cookie is the only protection), the rate limit is per IP only (no limit per email, and people who share an IP share one limit), and registration reveals whether an email is already registered.
 - Only 28 actives and 4 rules, matched by exact name (no fuzzy matching), so "no known actives found" does not mean a product has none, and "no warning" does not mean a routine suits you.
 - Warnings work on actives, not on formulas: concentration, pH and how a product is made are not considered, and alternate-day routines are not modelled.
 - Products cannot be edited, routines cannot be reordered, and there is no limit or paging on products.

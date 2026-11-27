@@ -41,7 +41,8 @@ Express 5, EJS views, PostgreSQL on Neon through the `pg` package, Passport (loc
 ## Sessions and auth
 
 - Sessions are stored in Postgres by `connect-pg-simple`, in the existing `"session"` table (`createTableIfMissing: false`, so the table must already exist). The browser only gets the `connect.sid` cookie, which holds a signed session id; the user id lives in the row's `sess` JSON under `passport.user`.
-- Cookie: `httpOnly`, `sameSite: lax`, `secure` only when `NODE_ENV=production`, 7 days. `trust proxy` is enabled in production so the secure cookie works behind Render.
+- Cookie: `httpOnly`, `sameSite: lax`, `secure` only when `NODE_ENV=production`, 7 days. `trust proxy` is enabled in production so the secure cookie works behind Render. The number of proxies is `TRUST_PROXY_HOPS` (default 1, parsed by `lib/trust-proxy.js`; Render's proxy chain is not documented, so verify it after deploying).
+- **Rate limits** (`auth/rate-limit.js`, applied in `routes/auth.js`): `POST /login` and `POST /register`, 10 per 15 minutes per `req.ip`, with separate limiters and stores created once at start-up. Login uses `skipSuccessfulRequests`, which counts status 400 and above, so a failed login MUST answer 401 and never redirect (`auth/login-response.js`; a test guards this). Register counts every attempt. At the limit the form is re-rendered with status 429, the email kept and the minutes to wait; one log line is written when a block starts. The store is in memory: reset on restart, not shared between instances.
 - Emails are trimmed and lowercased in the app (`normalizeEmail`) before every lookup or insert. The unique index on `users.email` is case-sensitive, so any new code path that handles emails must normalise first.
 - `deserializeUser` must never select `password_hash`: `req.user` is exposed to every view as `currentUser`.
 - Unknown email and wrong password must give the same message, and an unknown email still runs a bcrypt compare against a dummy hash to even out timing.
@@ -60,7 +61,7 @@ PostgreSQL on Neon. The domain is a skincare routine checker: users own products
 
 ## Known limitations
 
-- No CSRF token, no login rate limiting, and registration reveals whether an email is already registered.
+- No CSRF token, rate limiting is per IP only (no per-email limit; shared IPs share a budget; a database outage answers 500, which counts as a failed login), and registration reveals whether an email is already registered.
 - `routine_items` does not enforce that a product belongs to the same user as the routine; the application must check ownership.
 - `position` is not unique within a routine, so ordering ties are possible.
 - `checkRoutine` works on active ids, not products: two actives inside one product can still be flagged. It ignores concentration, pH and formulation, and it does not model alternate-day schedules.
