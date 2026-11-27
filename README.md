@@ -2,9 +2,11 @@
 
 Paste a product's ingredient list, see which known skincare actives it contains, and check your morning and evening routines for combinations that are often advised to be used at different times.
 
-**Live demo:** _TODO: add the live URL here after the first deploy._
+**Live demo:** https://skincare-routine-checker.onrender.com/
 
-> _Screenshot placeholder: add an image of the home page here (for example `docs/home.png`)._
+_It runs on Render's free tier, which goes to sleep when idle, so the first load can take up to a minute._
+
+![The home page after analysing a sample ingredient list: seven known actives found, the first one expanded to show its summary and source link, and the searchable Known Actives list on the right](docs/screenshot.png)
 
 ## The Problem
 
