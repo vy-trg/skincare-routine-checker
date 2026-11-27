@@ -404,16 +404,6 @@ textarea {
 .active__summary { margin: 0 0 var(--space-2); }
 .active__source { font-size: 0.9375rem; }
 
-.tag {
-  display: inline-block;
-  padding: 0.1rem 0.55rem;
-  border: 1px solid var(--muted);
-  font-size: 0.75rem;
-  line-height: 1.5;
-  color: var(--ink);
-  white-space: nowrap;
-}
-
 /* Loading: grey placeholder rows that take the place of the results, no spinner */
 .skeleton { margin: 0; padding: 0; list-style: none; border-top: 2px solid var(--rule); }
 
@@ -608,3 +598,8 @@ textarea {
   .routine { display: block; }
   .routine h2 { margin-top: 0; }
 }
+
+/* Home page chips: the overview above the results, and the category next to each name */
+.analyse__note { margin: 0; }
+.results__chips { margin: 0 0 var(--space-4); }
+.known__item .chip, .active__head .chip { white-space: nowrap; }

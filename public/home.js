@@ -15,6 +15,7 @@
   var emptyBox = document.getElementById('results-empty');
   var skeleton = document.getElementById('results-skeleton');
   var list = document.getElementById('results-list');
+  var chips = document.getElementById('results-chips');
   var next = document.getElementById('results-next'); // only on the page for logged-in people
   var live = document.getElementById('status-live');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -25,6 +26,7 @@
   } catch (e) {
     knownActives = [];
   }
+  var knownCategories = H.knownCategories(knownActives); // the categories that have a colour
 
   var BUTTON_LABEL = button.textContent;
   var busy = false;
@@ -54,6 +56,8 @@
 
   function resetResults() {
     list.textContent = '';
+    chips.textContent = '';
+    chips.hidden = true;
     summary.hidden = true;
     truncatedBox.hidden = true;
     emptyBox.hidden = true;
@@ -87,8 +91,12 @@
       summary.hidden = false;
       live.textContent = summary.textContent;
       actives.forEach(function (active, index) {
+        var item = el('li');
+        item.appendChild(chip(active.name, active.category));
+        chips.appendChild(item);
         list.appendChild(buildRow(active, index));
       });
+      chips.hidden = false;
       if (next) next.hidden = false;
     }
 
@@ -167,6 +175,14 @@
     return node;
   }
 
+  // A category chip, coloured through data-category (the colour map is in style.css). Text only.
+  function chip(text, category) {
+    var node = el('span', 'chip', text);
+    var key = H.categoryKey(category, knownCategories);
+    if (key) node.dataset.category = key;
+    return node;
+  }
+
   // One <details> per active. Everything is added with textContent, never as HTML.
   function buildRow(active, index) {
     var row = el('li', 'active');
@@ -177,7 +193,7 @@
 
     var head = el('summary', 'active__head');
     head.appendChild(el('span', 'active__name', active.name));
-    head.appendChild(el('span', 'tag', H.categoryLabel(active.category)));
+    head.appendChild(chip(H.categoryLabel(active.category), active.category));
     head.appendChild(el('span', 'active__chevron'));
     details.appendChild(head);
 

@@ -17,6 +17,7 @@
       <p id="analyse-error" class="notice" role="alert" hidden></p>
 
       <button type="submit" id="analyse-button" class="button button--primary">Analyse Ingredients</button>
+      <% if (!currentUser) { %><p class="field__hint analyse__note">No account needed.</p><% } %>
       <noscript><p class="field__hint">Analysing needs JavaScript. The list of known actives on this page works without it.</p></noscript>
     </form>
 
@@ -25,6 +26,8 @@
       <p id="results-summary" class="results__summary" tabindex="-1"></p>
       <p id="results-truncated" class="notice notice--info" hidden></p>
       <p id="results-empty" hidden></p>
+      <%# A quick overview in category colours; the accordion below has the same names and the categories in words. %>
+      <ul id="results-chips" class="chips results__chips" aria-hidden="true" hidden></ul>
 
       <ul id="results-skeleton" class="skeleton" aria-hidden="true" hidden>
         <li class="skeleton__row"><span class="skeleton__bar skeleton__bar--title"></span><span class="skeleton__bar skeleton__bar--tag"></span></li>
@@ -83,7 +86,7 @@
         <% actives.forEach((active) => { %>
           <li class="known__item" data-id="<%= active.id %>">
             <span class="known__name"><%= active.name %></span>
-            <span class="tag"><%= categoryLabel(active.category) %></span>
+            <%- include('partials/chip', { text: categoryLabel(active.category), category: active.category }) %>
           </li>
         <% }) %>
       </ul>

@@ -37,6 +37,25 @@
       .join(' ');
   }
 
+  // The category ids found in a list of actives, each once, in the order first seen. The page uses
+  // this to know which categories have a colour (the data decides, nothing is typed in twice).
+  function knownCategories(actives) {
+    var seen = [];
+    if (!Array.isArray(actives)) return seen;
+    actives.forEach(function (active) {
+      var id = active && active.category;
+      if (typeof id === 'string' && id !== '' && seen.indexOf(id) === -1) seen.push(id);
+    });
+    return seen;
+  }
+
+  // The value for a data-category attribute: the id itself when it is one of the known categories,
+  // otherwise '' (a neutral chip). Anything else never reaches an attribute.
+  function categoryKey(id, known) {
+    if (typeof id !== 'string' || !Array.isArray(known)) return '';
+    return known.indexOf(id) === -1 ? '' : id;
+  }
+
   // Lowercase, and treat hyphens (including Unicode dashes) and runs of spaces as one space,
   // like the server does when it matches ingredient names.
   function normalize(text) {
@@ -147,6 +166,8 @@
     STAGGER_MAX_ROWS: STAGGER_MAX_ROWS,
     TRUNCATED_MESSAGE: TRUNCATED_MESSAGE,
     categoryLabel: categoryLabel,
+    categoryKey: categoryKey,
+    knownCategories: knownCategories,
     filterActives: filterActives,
     filterStatus: filterStatus,
     resultsSummary: resultsSummary,
