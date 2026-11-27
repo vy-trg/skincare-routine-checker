@@ -2,9 +2,7 @@ const express = require('express');
 const requireLogin = require('../auth/require-login');
 const notFound = require('./not-found');
 const { parseId, parsePeriod } = require('../lib/products');
-const { summarizeRoutine } = require('../lib/routine-summary');
-
-const LABELS = { am: 'Morning routine', pm: 'Evening routine' };
+const { LABELS, buildRoutinePage } = require('../lib/routine-page');
 
 // stores.routines: createRoutineStore(pool); stores.products: createProductStore(pool).
 // A routine is never named by an id from the request: it is "this user's AM/PM routine".
@@ -16,25 +14,17 @@ function createRoutinesRouter({ routines, products }) {
     const period = parsePeriod(req.params.period);
     if (period === null) return next(); // unknown period: falls through to the normal 404
 
-    const [inRoutine, allProducts] = await Promise.all([
-      routines.getProducts(req.user.id, period),
+    // Both routines are read: wide screens show AM and PM side by side. Every query is for this user only.
+    const [am, pm, allProducts] = await Promise.all([
+      routines.getProducts(req.user.id, 'am'),
+      routines.getProducts(req.user.id, 'pm'),
       products.list(req.user.id),
     ]);
-    const usedIds = new Set(inRoutine.map((row) => row.id));
-    const available = allProducts.filter((row) => !usedIds.has(row.id));
-    const summary = summarizeRoutine(inRoutine);
 
     res.render('routine', {
       title: LABELS[period],
       period,
-      label: LABELS[period],
-      otherPeriod: period === 'am' ? 'pm' : 'am',
-      otherLabel: period === 'am' ? LABELS.pm : LABELS.am,
-      items: inRoutine.map((row) => ({ id: row.id, name: row.name })),
-      available: available.map((row) => ({ id: row.id, name: row.name })),
-      hasAnyProduct: allProducts.length > 0,
-      actives: summary.actives,
-      warnings: summary.warnings,
+      page: buildRoutinePage({ period, rowsByPeriod: { am, pm }, allProducts }),
     });
   });
 
