@@ -77,8 +77,8 @@ app.use(
 
 app.use((req, res) => {
   res.status(404).render('error', {
-    title: 'Not found',
-    heading: 'Page not found',
+    title: 'Not Found',
+    heading: 'Page Not Found',
     message: 'That page does not exist.',
   });
 });
@@ -90,8 +90,8 @@ app.use((err, req, res, next) => {
   console.error(err);
   if (res.headersSent) return next(err);
   res.status(500).render('error', {
-    title: 'Something went wrong',
-    heading: 'Something went wrong',
+    title: 'Something Went Wrong',
+    heading: 'Something Went Wrong',
     message: 'Please try again in a moment.',
   });
 });

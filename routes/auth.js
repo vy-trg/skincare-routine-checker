@@ -30,7 +30,7 @@ router.get('/', (req, res) => {
 
 router.get('/login', (req, res) => {
   if (req.isAuthenticated()) return res.redirect('/');
-  res.render('login', { title: 'Log in', errors: {}, values: {} });
+  res.render('login', { title: 'Log In', errors: {}, values: {} });
 });
 
 router.post('/login', (req, res, next) => {
@@ -43,7 +43,7 @@ router.post('/login', (req, res, next) => {
     if (!user) {
       // Same message for an unknown email and a wrong password.
       return res.status(401).render('login', {
-        title: 'Log in',
+        title: 'Log In',
         errors: { form: 'Incorrect email or password.' },
         values: { email },
       });
@@ -59,7 +59,7 @@ router.post('/login', (req, res, next) => {
 router.get('/register', (req, res) => {
   if (req.isAuthenticated()) return res.redirect('/');
   res.render('register', {
-    title: 'Create account',
+    title: 'Create Account',
     errors: {},
     values: {},
     skinTypes: SKIN_TYPES,
@@ -72,7 +72,7 @@ router.post('/register', async (req, res, next) => {
   // What to show again if registration fails. The password is never sent back.
   const renderForm = (status, formErrors) =>
     res.status(status).render('register', {
-      title: 'Create account',
+      title: 'Create Account',
       errors: formErrors,
       values: {
         email: clean.email,

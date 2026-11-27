@@ -2,8 +2,8 @@
 // missing, or belongs to another user: all three look identical on purpose.
 function notFound(res) {
   res.status(404).render('error', {
-    title: 'Not found',
-    heading: 'Page not found',
+    title: 'Not Found',
+    heading: 'Page Not Found',
     message: 'That page does not exist.',
   });
 }

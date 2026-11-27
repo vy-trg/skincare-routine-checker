@@ -1,6 +1,6 @@
 <%- include('partials/head', { title, wide: true }) %>
 
-<h1>My products</h1>
+<h1>My Products</h1>
 
 <% if (products.length === 0) { %>
   <p>No products yet. Add one below, then put it in your morning or evening routine.</p>
@@ -29,7 +29,7 @@
   <p class="field__hint">Deleting a product also removes it from your routines.</p>
 <% } %>
 
-<h2>Add a product</h2>
+<h2>Add a Product</h2>
 
 <form method="post" action="/products" class="form" novalidate>
   <div class="field">
@@ -46,7 +46,7 @@
     <% if (errors.ingredients) { %><p class="field__error"><%= errors.ingredients %></p><% } %>
   </div>
 
-  <button type="submit" class="button">Add product</button>
+  <button type="submit" class="button">Add Product</button>
 </form>
 
 <%- include('partials/foot') %>
