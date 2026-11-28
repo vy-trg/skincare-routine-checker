@@ -1,28 +1,31 @@
 <%- include('partials/head', { title, wide: true, routine: true }) %>
 
-<h1>Your Routines</h1>
+<div class="routine-head">
+  <h1>Your Routines</h1>
+  <p class="margin-note">one new thing at a time</p>
+</div>
 
 <%# On narrow screens one routine is shown and these links switch between them (real pages, so they work
     without JavaScript). Above 1000px both routines are shown side by side and the links are hidden. %>
 <nav class="seg" aria-label="Routine">
   <% page.panels.forEach((panel) => { %>
-    <a class="seg__item" href="/routines/<%= panel.period %>"<%- panel.isCurrent ? ' aria-current="page"' : '' %>><%= panel.shortLabel %><span class="status-live"> (<%= panel.label.toLowerCase() %>)</span></a>
+    <a class="seg__item" href="/routines/<%= panel.period %>"<%- panel.isCurrent ? ' aria-current="page"' : '' %>><%= panel.shortLabel %></a>
   <% }) %>
 </nav>
 
 <div class="routines">
   <% page.panels.forEach((panel) => { %>
     <section class="routine<%= panel.isCurrent ? ' routine--current' : '' %>" aria-labelledby="routine-<%= panel.period %>-title">
-      <h2 id="routine-<%= panel.period %>-title"><%= panel.label %></h2>
+      <h2 class="routine__title" id="routine-<%= panel.period %>-title"><img class="doodle routine__art" src="/illustrations/<%= panel.period === 'am' ? 'sun' : 'moon' %>.svg" alt="" width="60" height="60"><%= panel.label %></h2>
 
       <% if (panel.items.length === 0) { %>
         <p>Nothing in this routine yet.</p>
       <% } else { %>
         <ol class="steps">
-          <% panel.items.forEach((item) => { %>
-            <li class="step">
+          <% panel.items.forEach((item, index) => { %>
+            <li class="step" style="--i: <%= index %>">
               <span class="step__number" aria-hidden="true"><%= item.step %></span>
-              <%- include('partials/product-icon', { category: item.mainCategory }) %>
+              <%- include('partials/product-icon', { category: item.mainCategory, art: item.id }) %>
               <div class="step__main">
                 <strong class="step__name"><%= item.name %></strong>
                 <% if (item.actives.length === 0) { %>
@@ -37,7 +40,7 @@
               </div>
               <form method="post" action="/routines/<%= panel.period %>/items/<%= item.id %>/delete" class="step__remove">
                 <%- include('partials/csrf') %>
-                <button type="submit" class="button button--quiet button--small" aria-label="Remove <%= item.name %> from the <%= panel.label.toLowerCase() %>">Remove</button>
+                <button type="submit" aria-label="Remove <%= item.name %>"><span aria-hidden="true">×</span></button>
               </form>
             </li>
           <% }) %>
@@ -45,17 +48,15 @@
       <% } %>
 
       <% if (panel.available.length > 0) { %>
-        <form method="post" action="/routines/<%= panel.period %>/items" class="form form--inline">
+        <form method="post" action="/routines/<%= panel.period %>/items" class="add">
           <%- include('partials/csrf') %>
-          <div class="field">
-            <label for="product_id_<%= panel.period %>">Add a Product</label>
-            <select id="product_id_<%= panel.period %>" name="product_id">
-              <% panel.available.forEach((product) => { %>
-                <option value="<%= product.id %>"><%= product.name %></option>
-              <% }) %>
-            </select>
-          </div>
-          <button type="submit" class="button">Add</button>
+          <label for="product_id_<%= panel.period %>">+ Add a Product</label>
+          <select id="product_id_<%= panel.period %>" name="product_id">
+            <% panel.available.forEach((product) => { %>
+              <option value="<%= product.id %>"><%= product.name %></option>
+            <% }) %>
+          </select>
+          <button type="submit" class="button button--small">Add</button>
         </form>
       <% } else if (!panel.hasAnyProduct) { %>
         <p><a href="/products">Add a product</a> first, then you can put it in this routine.</p>
@@ -66,15 +67,24 @@
       <h3 class="routine__subhead">Conflicts</h3>
 
       <% if (panel.conflicts.status === 'conflicts') { %>
-        <% panel.warnings.forEach((warning) => { %>
-          <article class="insight insight--<%= warning.severity %>">
-            <p class="insight__level"><%= warning.level %></p>
-            <h4 class="insight__title"><%= warning.title %></h4>
+        <% panel.warnings.forEach((warning, index) => { %>
+          <article class="insight insight--<%= warning.severity %>" style="--i: <%= index %>">
+            <%# A triangle and the level in words, so the card never relies on colour alone %>
+            <p class="insight__badge">
+              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 2.5 18.5 17.5H1.5Z" fill="#FF7A45" stroke="#151515" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 8v4.2M10 14.3v.2" stroke="#151515" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <%= warning.level %>
+            </p>
+            <h4 class="insight__title"><%= warning.headline %><span class="status-live">: <%= warning.title %></span></h4>
+            <ul class="chips" aria-label="The two actives">
+              <% warning.pair.forEach((name) => { %>
+                <li><%- include('partials/chip', { text: name, category: '' }) %></li>
+              <% }) %>
+            </ul>
             <p class="insight__reason"><%= warning.reason %></p>
             <% if (warning.inSameProduct) { %>
-              <p class="list__meta">Both are in the same product.</p>
+              <p class="insight__reason">Both are in the same product.</p>
             <% } %>
-            <p class="insight__source"><a href="<%= warning.sourceUrl %>" target="_blank" rel="noopener noreferrer" aria-label="Source for <%= warning.title %> (opens in a new tab)">Source</a></p>
+            <p class="insight__source"><a href="<%= warning.sourceUrl %>" target="_blank" rel="noopener noreferrer" aria-label="Source: <%= warning.sourceName || 'link' %> for <%= warning.title %> (opens in a new tab)">Source: <%= warning.sourceName || 'link' %></a></p>
             <p class="insight__precaution"><%= panel.precaution %></p>
           </article>
         <% }) %>
