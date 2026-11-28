@@ -15,7 +15,8 @@
   var emptyBox = document.getElementById('results-empty');
   var skeleton = document.getElementById('results-skeleton');
   var list = document.getElementById('results-list');
-  var chips = document.getElementById('results-chips');
+  var markedBox = document.getElementById('results-marked-box');
+  var marked = document.getElementById('results-marked');
   var next = document.getElementById('results-next'); // only on the page for logged-in people
   var live = document.getElementById('status-live');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -56,8 +57,8 @@
 
   function resetResults() {
     list.textContent = '';
-    chips.textContent = '';
-    chips.hidden = true;
+    marked.textContent = '';
+    markedBox.hidden = true;
     summary.hidden = true;
     truncatedBox.hidden = true;
     emptyBox.hidden = true;
@@ -77,7 +78,9 @@
     showError(message);
   }
 
-  function showResults(data) {
+  // text: the list as it was when it was analysed. The positions in data.spans refer to it, so it is kept
+  // here and not read again from the box, which the person may have changed since.
+  function showResults(data, text) {
     resetResults();
     results.hidden = false;
     var actives = data.actives;
@@ -91,12 +94,9 @@
       summary.hidden = false;
       live.textContent = summary.textContent;
       actives.forEach(function (active, index) {
-        var item = el('li');
-        item.appendChild(chip(active.name, active.category));
-        chips.appendChild(item);
         list.appendChild(buildRow(active, index));
       });
-      chips.hidden = false;
+      showMarked(text, data.spans, actives);
       if (next) next.hidden = false;
     }
 
@@ -137,7 +137,7 @@
 
       if (!response.ok) return fail(H.errorMessage('http', response.status));
       if (!data || !Array.isArray(data.actives)) return fail(H.errorMessage('parse'));
-      showResults(data);
+      showResults(data, text);
     } catch (err) {
       if (err && err.name === 'AbortError') return; // replaced by a newer request
       fail(H.errorMessage('network'));
@@ -175,6 +175,26 @@
     return node;
   }
 
+  // The pasted list with each recognised item in a <mark>. Built only from text nodes and textContent,
+  // so nothing typed can become HTML. The colour comes from data-category (style.css decides blue or orange).
+  function showMarked(text, spans, actives) {
+    var categoryOf = {};
+    actives.forEach(function (active) {
+      categoryOf[active.id] = active.category;
+    });
+    H.highlightSegments(text, spans).forEach(function (piece) {
+      if (piece.id === null) {
+        marked.appendChild(document.createTextNode(piece.text));
+        return;
+      }
+      var node = el('mark', '', piece.text);
+      var key = H.categoryKey(categoryOf[piece.id], knownCategories);
+      if (key) node.dataset.category = key;
+      marked.appendChild(node);
+    });
+    markedBox.hidden = false;
+  }
+
   // A category chip, coloured through data-category (the colour map is in style.css). Text only.
   function chip(text, category) {
     var node = el('span', 'chip', text);
@@ -201,11 +221,13 @@
     body.appendChild(el('p', 'active__summary', active.summary));
     var href = H.safeHref(active.sourceUrl);
     if (href) {
-      var link = el('a', 'active__source', 'Source');
+      var name = typeof active.sourceName === 'string' && active.sourceName !== '' ? active.sourceName : '';
+      var link = el('a', 'active__source', name ? 'Source: ' + name : 'Source');
       link.href = href;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
-      link.setAttribute('aria-label', 'Source for ' + active.name + ' (opens in a new tab)');
+      // The visible words come first in the name, so voice control ("click Source: DermNet") still works.
+      link.setAttribute('aria-label', (name ? 'Source: ' + name : 'Source') + ' for ' + active.name + ' (opens in a new tab)');
       body.appendChild(link);
     }
     details.appendChild(body);

@@ -2,12 +2,18 @@
 
 <div class="home">
   <div class="home__main">
-    <h1>Check What Is In Your Skincare</h1>
-    <p class="lede">Paste the ingredient list from a product label. We pick out the known actives, explain each in a sentence and link to where that comes from.</p>
+    <div class="hero">
+      <img class="hero__blob" src="/illustrations/blob.svg" alt="" width="400" height="240">
+      <h1 class="home__headline">what's in the bottle?</h1>
+      <p class="lede">Paste the ingredient list from a product label. We pick out the known actives, explain each in a sentence and link to where that comes from.</p>
+      <img class="doodle hero__bottle" src="/illustrations/bottle-1.svg" alt="" width="80" height="100">
+      <img class="doodle hero__star" src="/illustrations/star.svg" alt="" width="60" height="60">
+    </div>
 
     <form id="analyse-form" class="analyse" novalidate>
       <div class="field">
         <label for="ingredients">Ingredient List</label>
+        <p class="margin-note">psst, it's on the back of the box</p>
         <textarea id="ingredients" name="text" rows="8" spellcheck="false"
                   aria-describedby="ingredients-hint analyse-error"
                   placeholder="Aqua, Glycerin, Niacinamide, Retinol, Tocopherol"></textarea>
@@ -26,8 +32,12 @@
       <p id="results-summary" class="results__summary" tabindex="-1"></p>
       <p id="results-truncated" class="notice notice--info" hidden></p>
       <p id="results-empty" hidden></p>
-      <%# A quick overview in category colours; the accordion below has the same names and the categories in words. %>
-      <ul id="results-chips" class="chips results__chips" aria-hidden="true" hidden></ul>
+      <%# The pasted list shown back, each known active marked (blue = gentle kinds, orange = treatment kinds). The
+          accordion below names every active and its category in words, so the colour is never the only information. %>
+      <div id="results-marked-box" hidden>
+        <h3 class="results__sub" id="results-marked-heading">Your List</h3>
+        <p id="results-marked" class="marked" tabindex="0" aria-labelledby="results-marked-heading"></p>
+      </div>
 
       <ul id="results-skeleton" class="skeleton" aria-hidden="true" hidden>
         <li class="skeleton__row"><span class="skeleton__bar skeleton__bar--title"></span><span class="skeleton__bar skeleton__bar--tag"></span></li>
