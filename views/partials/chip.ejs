@@ -1,0 +1,2 @@
+<%# A category chip. Needs: text, category (an id from data/actives.json, or '' for none). Colours: public/style.css. %>
+<span class="chip"<% if (category) { %> data-category="<%= category %>"<% } %>><%= text %></span>

@@ -37,6 +37,25 @@
       .join(' ');
   }
 
+  // The category ids found in a list of actives, each once, in the order first seen. The page uses
+  // this to know which categories have a colour (the data decides, nothing is typed in twice).
+  function knownCategories(actives) {
+    var seen = [];
+    if (!Array.isArray(actives)) return seen;
+    actives.forEach(function (active) {
+      var id = active && active.category;
+      if (typeof id === 'string' && id !== '' && seen.indexOf(id) === -1) seen.push(id);
+    });
+    return seen;
+  }
+
+  // The value for a data-category attribute: the id itself when it is one of the known categories,
+  // otherwise '' (a neutral chip). Anything else never reaches an attribute.
+  function categoryKey(id, known) {
+    if (typeof id !== 'string' || !Array.isArray(known)) return '';
+    return known.indexOf(id) === -1 ? '' : id;
+  }
+
   // Lowercase, and treat hyphens (including Unicode dashes) and runs of spaces as one space,
   // like the server does when it matches ingredient names.
   function normalize(text) {
@@ -130,6 +149,40 @@
     }
   }
 
+  // Cuts the pasted text into pieces so the page can mark the recognised items: [{ text, id }], where id is
+  // the active's id for a marked piece and null for the text between. Joining the texts always gives back
+  // the original text. Spans that are out of range, not whole numbers, empty or overlapping an earlier one
+  // are skipped, so bad input can never lose or repeat a character.
+  function highlightSegments(text, spans) {
+    if (typeof text !== 'string') return [];
+    var list = Array.isArray(spans) ? spans.slice() : [];
+    var valid = list.filter(function (span) {
+      return (
+        span !== null &&
+        typeof span === 'object' &&
+        Number.isInteger(span.start) &&
+        Number.isInteger(span.end) &&
+        span.start >= 0 &&
+        span.end > span.start &&
+        span.end <= text.length
+      );
+    });
+    valid.sort(function (a, b) {
+      return a.start - b.start;
+    });
+
+    var pieces = [];
+    var cursor = 0;
+    valid.forEach(function (span) {
+      if (span.start < cursor) return;
+      if (span.start > cursor) pieces.push({ text: text.slice(cursor, span.start), id: null });
+      pieces.push({ text: text.slice(span.start, span.end), id: typeof span.id === 'string' ? span.id : null });
+      cursor = span.end;
+    });
+    if (cursor < text.length) pieces.push({ text: text.slice(cursor), id: null });
+    return pieces;
+  }
+
   function accordionDuration(opening) {
     return opening ? OPEN_MS : CLOSE_MS;
   }
@@ -147,12 +200,15 @@
     STAGGER_MAX_ROWS: STAGGER_MAX_ROWS,
     TRUNCATED_MESSAGE: TRUNCATED_MESSAGE,
     categoryLabel: categoryLabel,
+    categoryKey: categoryKey,
+    knownCategories: knownCategories,
     filterActives: filterActives,
     filterStatus: filterStatus,
     resultsSummary: resultsSummary,
     emptyMessage: emptyMessage,
     errorMessage: errorMessage,
     safeHref: safeHref,
+    highlightSegments: highlightSegments,
     accordionDuration: accordionDuration,
     staggerDelay: staggerDelay,
   };

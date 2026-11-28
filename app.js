@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const pool = require('./db/pool');
 const configurePassport = require('./auth/passport');
 const { createCsrf } = require('./auth/csrf');
+const { FONT_ROUTES } = require('./lib/fonts');
 const { parseTrustProxyHops } = require('./lib/trust-proxy');
 const healthz = require('./routes/health');
 const { createProductStore } = require('./db/products');
@@ -44,6 +45,11 @@ if (isProduction) {
 app.get('/healthz', healthz);
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Self-hosted fonts (see lib/fonts.js). Before the session on purpose: no cookies, no database.
+for (const [prefix, dir] of Object.entries(FONT_ROUTES)) {
+  app.use(prefix, express.static(dir, { maxAge: '30d', index: false, dotfiles: 'ignore' }));
+}
 
 // The JSON API is mounted before the session middleware on purpose: it needs
 // no login and must never touch the session store or the database.

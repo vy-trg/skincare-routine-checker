@@ -1,0 +1,4 @@
+<%# A small crayon bottle on a soft disc tinted by the product's main category (null = grey). Decorative: the name is next to it.
+    Needs: category, art (a number: the product id, so each product keeps the same drawing). %>
+<% const bottle = ((Number(art) || 0) % 3) + 1; %>
+<span class="product-icon"<% if (category) { %> data-category="<%= category %>"<% } %> aria-hidden="true"><img class="doodle" src="/illustrations/bottle-<%= bottle %>.svg" alt="" width="80" height="100"></span>

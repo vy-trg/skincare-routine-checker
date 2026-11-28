@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 100" width="80" height="100"><!-- PLACEHOLDER drawing: replace this file with a hand drawing. Nothing in the code depends on its shape, only on its file name. -->
+<g fill="none" stroke="#151515" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M36 5 Q40 2 44 5 L44 17 L36 17 Z" fill="#FFD3BF"/><path d="M31 17 L49 17 L49 27 L31 27 Z" fill="#FFFFFF"/>
+<path d="M30 27 L50 27 Q60 36 59 48 L60 86 Q60 94 52 94 L28 94 Q20 94 21 86 L21 48 Q20 36 30 27 Z" fill="#FFFFFF"/>
+<path d="M27 58 Q40 54 54 58 L55 84 Q40 88 26 84 Z" fill="#A9D3F5"/>
+</g></svg>

@@ -4,11 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= title %> · Skincare routine checker</title>
+  <link rel="preload" href="/fonts/inter-tight/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/reenie-beanie/reenie-beanie-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<%# One crayon filter for the drawings: rough, slightly wobbly edges. Static (no animation). It is used only by
+    the .doodle class on illustration images, never on text. %>
+<svg class="crayon-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <filter id="crayon" x="-5%" y="-5%" width="110%" height="110%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
 <header class="masthead">
-  <a class="masthead__name" href="/">Skincare routine checker</a>
+  <a class="masthead__name" href="/">take it easy, skin<img class="doodle masthead__star" src="/illustrations/star.svg" alt="" width="24" height="24"></a>
   <nav class="masthead__nav" aria-label="Main">
     <% if (typeof currentUser !== 'undefined' && currentUser) { %>
       <a href="/products">Products</a>
@@ -24,4 +34,4 @@
     <% } %>
   </nav>
 </header>
-<main class="page<%= typeof wide !== 'undefined' && wide ? ' page--wide' : '' %><%= typeof home !== 'undefined' && home ? ' page--home' : '' %>">
+<main class="page<%= typeof wide !== 'undefined' && wide ? ' page--wide' : '' %><%= typeof home !== 'undefined' && home ? ' page--home' : '' %><%= typeof routine !== 'undefined' && routine ? ' page--routine' : '' %>">

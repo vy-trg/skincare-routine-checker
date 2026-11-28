@@ -18,7 +18,7 @@ Ingredient lists on skincare labels are long, written in INCI names, and hard to
 - **Known Actives panel:** a searchable, scrollable list of the 28 actives the app recognises.
 - **Accounts:** register and log in with an email and password, and optionally save a skin type.
 - **My Products:** add, list and delete your own products. Actives are worked out when the page is read, not stored.
-- **Morning and Evening routines:** add your products to each routine, see the combined actives, and get warnings with a one-sentence reason and a source link. If both actives sit in the same product, the page says so.
+- **Morning and Evening routines:** add your products to each routine, see the combined actives, and get warnings with a one-sentence reason and a source link. Each product shows its known actives as chips (blue for gentle kinds, orange for treatment kinds), and on a wide screen the two routines sit side by side. After analysing a list, the pasted text is shown back with each known active marked like with a highlighter. If both actives sit in the same product, the page says so.
 - **JSON API:** `POST /api/analyze` (public) and `GET /healthz` (for the host's health check).
 
 ## Tech Stack

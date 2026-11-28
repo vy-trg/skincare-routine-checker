@@ -34,3 +34,7 @@ test('app.js: the CSRF check comes after the session and passport, and before ev
 test('app.js: the CSRF error handler comes before the general error handler', () => {
   assert.ok(at('app.use(csrf.errorHandler);') < at('app.use((err, req, res, next) => {'));
 });
+
+test('app.js: the font files are served before the session, so they never touch cookies or the database', () => {
+  assert.ok(at('app.use(prefix, express.static(dir') < at('session({'));
+});
