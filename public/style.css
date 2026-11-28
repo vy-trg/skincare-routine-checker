@@ -420,7 +420,7 @@ summary { cursor: pointer; color: var(--muted); }
 }
 
 mark {
-  padding: 0 0.2em;
+  padding: 0 0.08em;
   border-radius: 0.25em;
   background: linear-gradient(transparent 36%, var(--c-mark, var(--sky-tint)) 36% 90%, transparent 90%);
   color: var(--ink);
@@ -578,8 +578,8 @@ mark {
 
 .step__number {
   justify-self: center;
-  font-size: 2.1rem;
-  line-height: 1;
+  font-size: 2.9rem;
+  line-height: 0.8;
   text-decoration: underline;
   text-decoration-color: var(--orange);
   text-decoration-thickness: 3px;
@@ -682,10 +682,10 @@ mark {
 .calm__reminder { margin: 0; padding-top: var(--space-3); border-top: 1px solid var(--hairline); font-size: 0.875rem; color: var(--muted); }
 
 @media (max-width: 30rem) {
-  .step { grid-template-columns: 1.6rem 2.8rem minmax(0, 1fr) auto; gap: var(--space-2); }
+  .step { grid-template-columns: 1.4rem 2.8rem minmax(0, 1fr) auto; gap: var(--space-2); }
   .product-icon { width: 2.8rem; height: 2.8rem; }
   .product-icon .doodle { width: 1.7rem; height: 2rem; }
-  .step__number { font-size: 1.8rem; }
+  .step__number { font-size: 2.4rem; }
 }
 
 @media (min-width: 1001px) {
