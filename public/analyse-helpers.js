@@ -149,6 +149,40 @@
     }
   }
 
+  // Cuts the pasted text into pieces so the page can mark the recognised items: [{ text, id }], where id is
+  // the active's id for a marked piece and null for the text between. Joining the texts always gives back
+  // the original text. Spans that are out of range, not whole numbers, empty or overlapping an earlier one
+  // are skipped, so bad input can never lose or repeat a character.
+  function highlightSegments(text, spans) {
+    if (typeof text !== 'string') return [];
+    var list = Array.isArray(spans) ? spans.slice() : [];
+    var valid = list.filter(function (span) {
+      return (
+        span !== null &&
+        typeof span === 'object' &&
+        Number.isInteger(span.start) &&
+        Number.isInteger(span.end) &&
+        span.start >= 0 &&
+        span.end > span.start &&
+        span.end <= text.length
+      );
+    });
+    valid.sort(function (a, b) {
+      return a.start - b.start;
+    });
+
+    var pieces = [];
+    var cursor = 0;
+    valid.forEach(function (span) {
+      if (span.start < cursor) return;
+      if (span.start > cursor) pieces.push({ text: text.slice(cursor, span.start), id: null });
+      pieces.push({ text: text.slice(span.start, span.end), id: typeof span.id === 'string' ? span.id : null });
+      cursor = span.end;
+    });
+    if (cursor < text.length) pieces.push({ text: text.slice(cursor), id: null });
+    return pieces;
+  }
+
   function accordionDuration(opening) {
     return opening ? OPEN_MS : CLOSE_MS;
   }
@@ -174,6 +208,7 @@
     emptyMessage: emptyMessage,
     errorMessage: errorMessage,
     safeHref: safeHref,
+    highlightSegments: highlightSegments,
     accordionDuration: accordionDuration,
     staggerDelay: staggerDelay,
   };
